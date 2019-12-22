@@ -37,12 +37,14 @@ namespace ShareX
         public AboutForm()
         {
             InitializeComponent();
-            Icon = ShareXResources.Icon;
+
             lblProductName.Text = Program.Title;
             pbLogo.Image = ShareXResources.Logo;
 
             rtbShareXInfo.AddContextMenu();
             rtbCredits.AddContextMenu();
+
+            ShareXResources.ApplyTheme(this);
 
 #if STEAM || WindowsStore
             uclUpdate.Visible = false;
@@ -73,7 +75,7 @@ namespace ShareX
             lblMike.Text = "McoreD (Michael Delpach)";
 
             rtbShareXInfo.Text = $@"{Resources.AboutForm_AboutForm_Website}: {Links.URL_WEBSITE}
-{Resources.AboutForm_AboutForm_Project_page}: {Links.URL_PROJECT}
+{Resources.AboutForm_AboutForm_Project_page}: {Links.URL_GITHUB}
 {Resources.AboutForm_AboutForm_Changelog}: {Links.URL_CHANGELOG}";
 
             rtbCredits.Text = $@"{Resources.AboutForm_AboutForm_Contributors}:
@@ -138,12 +140,12 @@ Copyright (c) 2007-2019 ShareX Team";
 
         private void pbBerkURL_Click(object sender, EventArgs e)
         {
-            URLHelpers.OpenURL(Links.URL_BERK);
+            URLHelpers.OpenURL(Links.URL_JAEX);
         }
 
         private void pbMikeURL_Click(object sender, EventArgs e)
         {
-            URLHelpers.OpenURL(Links.URL_MIKE);
+            URLHelpers.OpenURL(Links.URL_MCORED);
         }
 
         private void rtb_LinkClicked(object sender, LinkClickedEventArgs e)

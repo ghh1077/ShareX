@@ -49,7 +49,7 @@ namespace ShareX.HelpersLib
 
                     OnCheckedChanged(EventArgs.Empty);
 
-                    Refresh();
+                    Invalidate();
                 }
             }
         }
@@ -71,12 +71,16 @@ namespace ShareX.HelpersLib
                 {
                     text = value;
 
-                    Refresh();
+                    Invalidate();
                 }
             }
         }
 
+        [DefaultValue(3)]
         public int SpaceAfterCheckBox { get; set; }
+
+        [DefaultValue(false)]
+        public bool IgnoreClick { get; set; }
 
         private bool isChecked, isHover;
         private string text;
@@ -134,22 +138,27 @@ namespace ShareX.HelpersLib
         protected override void OnMouseEnter(EventArgs e)
         {
             base.OnMouseEnter(e);
+
             isHover = true;
-            Refresh();
+            Invalidate();
         }
 
         protected override void OnMouseLeave(EventArgs e)
         {
             base.OnMouseLeave(e);
+
             isHover = false;
-            Refresh();
+            Invalidate();
         }
 
         protected override void OnClick(EventArgs e)
         {
             base.OnClick(e);
 
-            Checked = !Checked;
+            if (!IgnoreClick)
+            {
+                Checked = !Checked;
+            }
         }
 
         protected virtual void OnCheckedChanged(EventArgs e)

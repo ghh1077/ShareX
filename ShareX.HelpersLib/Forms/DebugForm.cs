@@ -44,14 +44,16 @@ namespace ShareX.HelpersLib
 
         private DebugForm(Logger logger)
         {
-            InitializeComponent();
-            Icon = ShareXResources.Icon;
             Logger = logger;
+
+            InitializeComponent();
 
             rtbDebug.Text = Logger.ToString();
             rtbDebug.SelectionStart = rtbDebug.TextLength;
             rtbDebug.ScrollToCaret();
             rtbDebug.AddContextMenu();
+
+            ShareXResources.ApplyTheme(this);
 
             string startupPath = AppDomain.CurrentDomain.BaseDirectory;
             llRunningFrom.Text = startupPath;

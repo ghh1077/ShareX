@@ -72,7 +72,6 @@ namespace ShareX.ScreenCaptureLib
             {
                 if (currentTool == value) return;
 
-                ShapeType previousTool = currentTool;
                 currentTool = value;
 
                 if (Form.IsAnnotationMode)
@@ -93,9 +92,21 @@ namespace ShareX.ScreenCaptureLib
                     ClearTools();
                 }
 
-                if (previousTool != ShapeType.ToolSelect && currentTool != ShapeType.ToolSelect)
+                if (CurrentShape != null)
                 {
-                    DeselectCurrentShape();
+                    // do not keep selection if select tool does not handle it
+                    if (currentTool == ShapeType.ToolSelect)
+                    {
+                        if (!CurrentShape.IsHandledBySelectTool)
+                        {
+                            DeselectCurrentShape();
+                        }
+                    }
+                    // do not keep selection if we switch away from a tool and the selected shape does not match the new type
+                    else if (CurrentShape.ShapeType != currentTool)
+                    {
+                        DeselectCurrentShape();
+                    }
                 }
 
                 OnCurrentShapeTypeChanged(currentTool);
@@ -172,6 +183,7 @@ namespace ShareX.ScreenCaptureLib
         // Is holding Alt?
         public bool IsSnapResizing { get; private set; }
         public bool IsRenderingOutput { get; private set; }
+        public Point RenderOffset { get; private set; }
         public bool IsModified { get; internal set; }
 
         public InputManager InputManager { get; private set; } = new InputManager();
@@ -579,10 +591,6 @@ namespace ShareX.ScreenCaptureLib
                         case Keys.PageDown:
                             MoveCurrentShapeDown();
                             break;
-                        case Keys.Q:
-                            Options.QuickCrop = !Options.QuickCrop;
-                            tsmiQuickCrop.Checked = !Options.QuickCrop;
-                            break;
                         case Keys.M:
                             CurrentTool = ShapeType.ToolSelect;
                             break;
@@ -610,6 +618,16 @@ namespace ShareX.ScreenCaptureLib
                             break;
                         case Keys.Control | Keys.P:
                             Form.OnPrintImageRequested();
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (e.KeyData)
+                    {
+                        case Keys.Q:
+                            Options.QuickCrop = !Options.QuickCrop;
+                            tsmiQuickCrop.Checked = !Options.QuickCrop;
                             break;
                     }
                 }
@@ -811,6 +829,7 @@ namespace ShareX.ScreenCaptureLib
 
             if (shape != null && shape.IsSelectable) // Select shape
             {
+                DeselectCurrentShape();
                 IsMoving = true;
                 shape.OnMoving();
                 Form.Cursor = Cursors.SizeAll;
@@ -879,7 +898,7 @@ namespace ShareX.ScreenCaptureLib
 
                             SelectCurrentShape();
 
-                            if (Options.SwitchToSelectionToolAfterDrawing && (shape.ShapeCategory == ShapeCategory.Drawing || shape.ShapeCategory == ShapeCategory.Effect))
+                            if (Options.SwitchToSelectionToolAfterDrawing && shape.IsHandledBySelectTool)
                             {
                                 CurrentTool = ShapeType.ToolSelect;
                             }
@@ -1038,6 +1057,9 @@ namespace ShareX.ScreenCaptureLib
                 case ShapeType.DrawingStep:
                     shape = new StepDrawingShape();
                     break;
+                case ShapeType.DrawingMagnify:
+                    shape = new MagnifyDrawingShape();
+                    break;
                 case ShapeType.DrawingImage:
                     shape = new ImageFileDrawingShape();
                     break;
@@ -1163,10 +1185,10 @@ namespace ShareX.ScreenCaptureLib
                     {
                         Point location = InputManager.ClientMousePosition;
 
-                        return new RectangleRegionShape()
-                        {
-                            Rectangle = new Rectangle(new Point(location.X - (Options.FixedSize.Width / 2), location.Y - (Options.FixedSize.Height / 2)), Options.FixedSize)
-                        };
+                        BaseShape rectangleRegionShape = CreateShape(ShapeType.RegionRectangle);
+                        rectangleRegionShape.Rectangle = new Rectangle(new Point(location.X - (Options.FixedSize.Width / 2),
+                            location.Y - (Options.FixedSize.Height / 2)), Options.FixedSize);
+                        return rectangleRegionShape;
                     }
                     else
                     {
@@ -1176,10 +1198,9 @@ namespace ShareX.ScreenCaptureLib
                         {
                             Rectangle hoverArea = CaptureHelpers.ScreenToClient(window.Rectangle);
 
-                            return new RectangleRegionShape()
-                            {
-                                Rectangle = Rectangle.Intersect(Form.ClientArea, hoverArea)
-                            };
+                            BaseShape rectangleRegionShape = CreateShape(ShapeType.RegionRectangle);
+                            rectangleRegionShape.Rectangle = Rectangle.Intersect(Form.ClientArea, hoverArea);
+                            return rectangleRegionShape;
                         }
                     }
                 }
@@ -1225,6 +1246,7 @@ namespace ShareX.ScreenCaptureLib
             if (DrawingShapes.Length > 0 || EffectShapes.Length > 0)
             {
                 IsRenderingOutput = true;
+                RenderOffset = offset;
 
                 MoveAll(-offset.X, -offset.Y);
 
@@ -1249,6 +1271,7 @@ namespace ShareX.ScreenCaptureLib
 
                 MoveAll(offset);
 
+                RenderOffset = Point.Empty;
                 IsRenderingOutput = false;
             }
 
@@ -1550,17 +1573,22 @@ namespace ShareX.ScreenCaptureLib
             }
             else if (Clipboard.ContainsFileDropList())
             {
-                string[] files = Clipboard.GetFileDropList().OfType<string>().Where(x => Helpers.IsImageFile(x)).ToArray();
+                string[] files = ClipboardHelpers.GetFileDropList();
 
-                if (files.Length > 0 && !string.IsNullOrEmpty(files[0]))
+                if (files != null)
                 {
-                    Image img = ImageHelpers.LoadImage(files[0]);
-                    InsertImage(img);
+                    string imageFilePath = files.FirstOrDefault(x => Helpers.IsImageFile(x));
+
+                    if (!string.IsNullOrEmpty(imageFilePath))
+                    {
+                        Image img = ImageHelpers.LoadImage(imageFilePath);
+                        InsertImage(img);
+                    }
                 }
             }
             else if (Clipboard.ContainsText())
             {
-                string text = Clipboard.GetText();
+                string text = ClipboardHelpers.GetText();
 
                 if (!string.IsNullOrEmpty(text))
                 {

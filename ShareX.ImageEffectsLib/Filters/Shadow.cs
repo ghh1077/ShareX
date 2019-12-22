@@ -43,7 +43,7 @@ namespace ShareX.ImageEffectsLib
             }
             set
             {
-                opacity = value.Between(0.1f, 1.0f);
+                opacity = value.Clamp(0.1f, 1.0f);
             }
         }
 
@@ -58,7 +58,7 @@ namespace ShareX.ImageEffectsLib
             }
             set
             {
-                size = value.Min(0);
+                size = value.Max(0);
             }
         }
 

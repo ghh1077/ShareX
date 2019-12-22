@@ -225,7 +225,8 @@ namespace ShareX
                             screenshot.CaptureCursor = taskSettings.CaptureSettings.ScreenRecordShowCursor;
 
                             screenRecorder = new ScreenRecorder(ScreenRecordOutput.FFmpeg, options, screenshot, captureRectangle);
-                            screenRecorder.RecordingStarted += () => recordForm.ChangeState(ScreenRecordState.AfterRecordingStart);
+                            screenRecorder.RecordingStarted += ScreenRecorder_RecordingStarted;
+                            screenRecorder.EncodingProgressChanged += ScreenRecorder_EncodingProgressChanged;
                             recordForm.ChangeState(ScreenRecordState.AfterStart);
                             screenRecorder.StartRecording();
 
@@ -294,6 +295,16 @@ namespace ShareX
             });
         }
 
+        private static void ScreenRecorder_RecordingStarted()
+        {
+            recordForm.ChangeState(ScreenRecordState.AfterRecordingStart);
+        }
+
+        private static void ScreenRecorder_EncodingProgressChanged(int progress)
+        {
+            recordForm.ChangeStateProgress(progress);
+        }
+
         private static string ProcessTwoPassEncoding(string input, TaskSettings taskSettings, bool deleteInputFile = true)
         {
             string filename = TaskHelpers.GetFilename(taskSettings, taskSettings.CaptureSettings.FFmpegOptions.Extension);
@@ -303,7 +314,7 @@ namespace ShareX
             {
                 if (taskSettings.CaptureSettings.FFmpegOptions.VideoCodec == FFmpegVideoCodec.gif)
                 {
-                    screenRecorder.FFmpegEncodeAsGIF(input, output, Program.ToolsFolder);
+                    screenRecorder.FFmpegEncodeAsGIF(input, output);
                 }
                 else
                 {

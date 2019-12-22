@@ -273,9 +273,9 @@ namespace ShareX.UploadersLib
             this.txtAzureStorageCustomDomain = new System.Windows.Forms.TextBox();
             this.lblAzureStorageCustomDomain = new System.Windows.Forms.Label();
             this.tpBackblazeB2 = new System.Windows.Forms.TabPage();
-            this.lblB2ManageLink = new System.Windows.Forms.LinkLabel();
-            this.txtB2UrlPreview = new System.Windows.Forms.TextBox();
             this.lblB2UrlPreview = new System.Windows.Forms.Label();
+            this.lblB2ManageLink = new System.Windows.Forms.LinkLabel();
+            this.lblB2UrlPreviewLabel = new System.Windows.Forms.Label();
             this.lblB2Bucket = new System.Windows.Forms.Label();
             this.lblB2UploadPath = new System.Windows.Forms.Label();
             this.lblB2ApplicationKey = new System.Windows.Forms.Label();
@@ -373,13 +373,10 @@ namespace ShareX.UploadersLib
             this.lblTeknikUploadAPIUrl = new System.Windows.Forms.Label();
             this.tbTeknikUploadAPIUrl = new System.Windows.Forms.TextBox();
             this.tpPomf = new System.Windows.Forms.TabPage();
-            this.btnPomfTest = new System.Windows.Forms.Button();
             this.txtPomfResultURL = new System.Windows.Forms.TextBox();
             this.txtPomfUploadURL = new System.Windows.Forms.TextBox();
             this.lblPomfResultURL = new System.Windows.Forms.Label();
             this.lblPomfUploadURL = new System.Windows.Forms.Label();
-            this.lblPomfUploaders = new System.Windows.Forms.Label();
-            this.cbPomfUploaders = new System.Windows.Forms.ComboBox();
             this.tpSeafile = new System.Windows.Forms.TabPage();
             this.cbSeafileAPIURL = new System.Windows.Forms.ComboBox();
             this.grpSeafileShareSettings = new System.Windows.Forms.GroupBox();
@@ -544,7 +541,7 @@ namespace ShareX.UploadersLib
             this.cbImgurUseGIFV = new System.Windows.Forms.CheckBox();
             this.cbImgurUploadSelectedAlbum = new System.Windows.Forms.CheckBox();
             this.cbImgurDirectLink = new System.Windows.Forms.CheckBox();
-            this.lvImgurAlbumList = new System.Windows.Forms.ListView();
+            this.lvImgurAlbumList = new ShareX.HelpersLib.MyListView();
             this.chImgurID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chImgurTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chImgurDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -560,13 +557,6 @@ namespace ShareX.UploadersLib
             this.txtImageShackUsername = new System.Windows.Forms.TextBox();
             this.txtImageShackPassword = new System.Windows.Forms.TextBox();
             this.lblImageShackPassword = new System.Windows.Forms.Label();
-            this.tpTinyPic = new System.Windows.Forms.TabPage();
-            this.btnTinyPicLogin = new System.Windows.Forms.Button();
-            this.txtTinyPicPassword = new System.Windows.Forms.TextBox();
-            this.lblTinyPicPassword = new System.Windows.Forms.Label();
-            this.txtTinyPicUsername = new System.Windows.Forms.TextBox();
-            this.lblTinyPicUsername = new System.Windows.Forms.Label();
-            this.btnTinyPicOpenMyImages = new System.Windows.Forms.Button();
             this.tpFlickr = new System.Windows.Forms.TabPage();
             this.cbFlickrDirectLink = new System.Windows.Forms.CheckBox();
             this.tpPhotobucket = new System.Windows.Forms.TabPage();
@@ -601,10 +591,7 @@ namespace ShareX.UploadersLib
             this.chPicasaDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnPicasaRefreshAlbumList = new System.Windows.Forms.Button();
             this.tpChevereto = new System.Windows.Forms.TabPage();
-            this.btnCheveretoTestAll = new System.Windows.Forms.Button();
             this.lblCheveretoUploadURLExample = new System.Windows.Forms.Label();
-            this.lblCheveretoUploaders = new System.Windows.Forms.Label();
-            this.cbCheveretoUploaders = new System.Windows.Forms.ComboBox();
             this.cbCheveretoDirectURL = new System.Windows.Forms.CheckBox();
             this.lblCheveretoUploadURL = new System.Windows.Forms.Label();
             this.txtCheveretoUploadURL = new System.Windows.Forms.TextBox();
@@ -619,7 +606,6 @@ namespace ShareX.UploadersLib
             this.ttlvMain = new ShareX.HelpersLib.TabToListView();
             this.atcImgurAccountType = new ShareX.UploadersLib.AccountTypeControl();
             this.oauth2Imgur = new ShareX.UploadersLib.OAuthControl();
-            this.atcTinyPicAccountType = new ShareX.UploadersLib.AccountTypeControl();
             this.oauthFlickr = new ShareX.UploadersLib.OAuthControl();
             this.oauth2Picasa = new ShareX.UploadersLib.OAuthControl();
             this.oAuth2Gist = new ShareX.UploadersLib.OAuthControl();
@@ -712,7 +698,6 @@ namespace ShareX.UploadersLib
             this.tcImageUploaders.SuspendLayout();
             this.tpImgur.SuspendLayout();
             this.tpImageShack.SuspendLayout();
-            this.tpTinyPic.SuspendLayout();
             this.tpFlickr.SuspendLayout();
             this.tpPhotobucket.SuspendLayout();
             this.gbPhotobucketAlbumPath.SuspendLayout();
@@ -2323,10 +2308,10 @@ namespace ShareX.UploadersLib
             // tpBackblazeB2
             // 
             this.tpBackblazeB2.BackColor = System.Drawing.SystemColors.Window;
-            this.tpBackblazeB2.Controls.Add(this.lblB2ManageLink);
-            this.tpBackblazeB2.Controls.Add(this.txtB2UrlPreview);
-            this.tpBackblazeB2.Controls.Add(this.txtB2CustomUrl);
             this.tpBackblazeB2.Controls.Add(this.lblB2UrlPreview);
+            this.tpBackblazeB2.Controls.Add(this.lblB2ManageLink);
+            this.tpBackblazeB2.Controls.Add(this.txtB2CustomUrl);
+            this.tpBackblazeB2.Controls.Add(this.lblB2UrlPreviewLabel);
             this.tpBackblazeB2.Controls.Add(this.cbB2CustomUrl);
             this.tpBackblazeB2.Controls.Add(this.lblB2Bucket);
             this.tpBackblazeB2.Controls.Add(this.txtB2Bucket);
@@ -2339,6 +2324,11 @@ namespace ShareX.UploadersLib
             resources.ApplyResources(this.tpBackblazeB2, "tpBackblazeB2");
             this.tpBackblazeB2.Name = "tpBackblazeB2";
             // 
+            // lblB2UrlPreview
+            // 
+            resources.ApplyResources(this.lblB2UrlPreview, "lblB2UrlPreview");
+            this.lblB2UrlPreview.Name = "lblB2UrlPreview";
+            // 
             // lblB2ManageLink
             // 
             resources.ApplyResources(this.lblB2ManageLink, "lblB2ManageLink");
@@ -2347,16 +2337,10 @@ namespace ShareX.UploadersLib
             this.lblB2ManageLink.VisitedLinkColor = System.Drawing.Color.Blue;
             this.lblB2ManageLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblB2ManageLink_LinkClicked);
             // 
-            // txtB2UrlPreview
+            // lblB2UrlPreviewLabel
             // 
-            resources.ApplyResources(this.txtB2UrlPreview, "txtB2UrlPreview");
-            this.txtB2UrlPreview.Name = "txtB2UrlPreview";
-            this.txtB2UrlPreview.ReadOnly = true;
-            // 
-            // lblB2UrlPreview
-            // 
-            resources.ApplyResources(this.lblB2UrlPreview, "lblB2UrlPreview");
-            this.lblB2UrlPreview.Name = "lblB2UrlPreview";
+            resources.ApplyResources(this.lblB2UrlPreviewLabel, "lblB2UrlPreviewLabel");
+            this.lblB2UrlPreviewLabel.Name = "lblB2UrlPreviewLabel";
             // 
             // lblB2Bucket
             // 
@@ -3040,22 +3024,12 @@ namespace ShareX.UploadersLib
             // tpPomf
             // 
             this.tpPomf.BackColor = System.Drawing.SystemColors.Window;
-            this.tpPomf.Controls.Add(this.btnPomfTest);
             this.tpPomf.Controls.Add(this.txtPomfResultURL);
             this.tpPomf.Controls.Add(this.txtPomfUploadURL);
             this.tpPomf.Controls.Add(this.lblPomfResultURL);
             this.tpPomf.Controls.Add(this.lblPomfUploadURL);
-            this.tpPomf.Controls.Add(this.lblPomfUploaders);
-            this.tpPomf.Controls.Add(this.cbPomfUploaders);
             resources.ApplyResources(this.tpPomf, "tpPomf");
             this.tpPomf.Name = "tpPomf";
-            // 
-            // btnPomfTest
-            // 
-            resources.ApplyResources(this.btnPomfTest, "btnPomfTest");
-            this.btnPomfTest.Name = "btnPomfTest";
-            this.btnPomfTest.UseVisualStyleBackColor = true;
-            this.btnPomfTest.Click += new System.EventHandler(this.btnPomfTest_Click);
             // 
             // txtPomfResultURL
             // 
@@ -3078,19 +3052,6 @@ namespace ShareX.UploadersLib
             // 
             resources.ApplyResources(this.lblPomfUploadURL, "lblPomfUploadURL");
             this.lblPomfUploadURL.Name = "lblPomfUploadURL";
-            // 
-            // lblPomfUploaders
-            // 
-            resources.ApplyResources(this.lblPomfUploaders, "lblPomfUploaders");
-            this.lblPomfUploaders.Name = "lblPomfUploaders";
-            // 
-            // cbPomfUploaders
-            // 
-            this.cbPomfUploaders.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPomfUploaders.FormattingEnabled = true;
-            resources.ApplyResources(this.cbPomfUploaders, "cbPomfUploaders");
-            this.cbPomfUploaders.Name = "cbPomfUploaders";
-            this.cbPomfUploaders.SelectedIndexChanged += new System.EventHandler(this.cbPomfUploaders_SelectedIndexChanged);
             // 
             // tpSeafile
             // 
@@ -4262,7 +4223,6 @@ namespace ShareX.UploadersLib
             // 
             this.tcImageUploaders.Controls.Add(this.tpImgur);
             this.tcImageUploaders.Controls.Add(this.tpImageShack);
-            this.tcImageUploaders.Controls.Add(this.tpTinyPic);
             this.tcImageUploaders.Controls.Add(this.tpFlickr);
             this.tcImageUploaders.Controls.Add(this.tpPhotobucket);
             this.tcImageUploaders.Controls.Add(this.tpGooglePhotos);
@@ -4310,12 +4270,13 @@ namespace ShareX.UploadersLib
             // 
             // lvImgurAlbumList
             // 
+            this.lvImgurAlbumList.AllowColumnSort = true;
+            this.lvImgurAlbumList.AutoFillColumn = true;
             this.lvImgurAlbumList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chImgurID,
             this.chImgurTitle,
             this.chImgurDescription});
             this.lvImgurAlbumList.FullRowSelect = true;
-            this.lvImgurAlbumList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvImgurAlbumList.HideSelection = false;
             resources.ApplyResources(this.lvImgurAlbumList, "lvImgurAlbumList");
             this.lvImgurAlbumList.MultiSelect = false;
@@ -4420,56 +4381,6 @@ namespace ShareX.UploadersLib
             // 
             resources.ApplyResources(this.lblImageShackPassword, "lblImageShackPassword");
             this.lblImageShackPassword.Name = "lblImageShackPassword";
-            // 
-            // tpTinyPic
-            // 
-            this.tpTinyPic.BackColor = System.Drawing.SystemColors.Window;
-            this.tpTinyPic.Controls.Add(this.atcTinyPicAccountType);
-            this.tpTinyPic.Controls.Add(this.btnTinyPicLogin);
-            this.tpTinyPic.Controls.Add(this.txtTinyPicPassword);
-            this.tpTinyPic.Controls.Add(this.lblTinyPicPassword);
-            this.tpTinyPic.Controls.Add(this.txtTinyPicUsername);
-            this.tpTinyPic.Controls.Add(this.lblTinyPicUsername);
-            this.tpTinyPic.Controls.Add(this.btnTinyPicOpenMyImages);
-            resources.ApplyResources(this.tpTinyPic, "tpTinyPic");
-            this.tpTinyPic.Name = "tpTinyPic";
-            // 
-            // btnTinyPicLogin
-            // 
-            resources.ApplyResources(this.btnTinyPicLogin, "btnTinyPicLogin");
-            this.btnTinyPicLogin.Name = "btnTinyPicLogin";
-            this.btnTinyPicLogin.UseVisualStyleBackColor = true;
-            this.btnTinyPicLogin.Click += new System.EventHandler(this.btnTinyPicLogin_Click);
-            // 
-            // txtTinyPicPassword
-            // 
-            resources.ApplyResources(this.txtTinyPicPassword, "txtTinyPicPassword");
-            this.txtTinyPicPassword.Name = "txtTinyPicPassword";
-            this.txtTinyPicPassword.UseSystemPasswordChar = true;
-            this.txtTinyPicPassword.TextChanged += new System.EventHandler(this.txtTinyPicPassword_TextChanged);
-            // 
-            // lblTinyPicPassword
-            // 
-            resources.ApplyResources(this.lblTinyPicPassword, "lblTinyPicPassword");
-            this.lblTinyPicPassword.Name = "lblTinyPicPassword";
-            // 
-            // txtTinyPicUsername
-            // 
-            resources.ApplyResources(this.txtTinyPicUsername, "txtTinyPicUsername");
-            this.txtTinyPicUsername.Name = "txtTinyPicUsername";
-            this.txtTinyPicUsername.TextChanged += new System.EventHandler(this.txtTinyPicUsername_TextChanged);
-            // 
-            // lblTinyPicUsername
-            // 
-            resources.ApplyResources(this.lblTinyPicUsername, "lblTinyPicUsername");
-            this.lblTinyPicUsername.Name = "lblTinyPicUsername";
-            // 
-            // btnTinyPicOpenMyImages
-            // 
-            resources.ApplyResources(this.btnTinyPicOpenMyImages, "btnTinyPicOpenMyImages");
-            this.btnTinyPicOpenMyImages.Name = "btnTinyPicOpenMyImages";
-            this.btnTinyPicOpenMyImages.UseVisualStyleBackColor = true;
-            this.btnTinyPicOpenMyImages.Click += new System.EventHandler(this.btnTinyPicOpenMyImages_Click);
             // 
             // tpFlickr
             // 
@@ -4703,10 +4614,7 @@ namespace ShareX.UploadersLib
             // tpChevereto
             // 
             this.tpChevereto.BackColor = System.Drawing.SystemColors.Window;
-            this.tpChevereto.Controls.Add(this.btnCheveretoTestAll);
             this.tpChevereto.Controls.Add(this.lblCheveretoUploadURLExample);
-            this.tpChevereto.Controls.Add(this.lblCheveretoUploaders);
-            this.tpChevereto.Controls.Add(this.cbCheveretoUploaders);
             this.tpChevereto.Controls.Add(this.cbCheveretoDirectURL);
             this.tpChevereto.Controls.Add(this.lblCheveretoUploadURL);
             this.tpChevereto.Controls.Add(this.txtCheveretoUploadURL);
@@ -4715,30 +4623,10 @@ namespace ShareX.UploadersLib
             resources.ApplyResources(this.tpChevereto, "tpChevereto");
             this.tpChevereto.Name = "tpChevereto";
             // 
-            // btnCheveretoTestAll
-            // 
-            resources.ApplyResources(this.btnCheveretoTestAll, "btnCheveretoTestAll");
-            this.btnCheveretoTestAll.Name = "btnCheveretoTestAll";
-            this.btnCheveretoTestAll.UseVisualStyleBackColor = true;
-            this.btnCheveretoTestAll.Click += new System.EventHandler(this.btnCheveretoTestAll_Click);
-            // 
             // lblCheveretoUploadURLExample
             // 
             resources.ApplyResources(this.lblCheveretoUploadURLExample, "lblCheveretoUploadURLExample");
             this.lblCheveretoUploadURLExample.Name = "lblCheveretoUploadURLExample";
-            // 
-            // lblCheveretoUploaders
-            // 
-            resources.ApplyResources(this.lblCheveretoUploaders, "lblCheveretoUploaders");
-            this.lblCheveretoUploaders.Name = "lblCheveretoUploaders";
-            // 
-            // cbCheveretoUploaders
-            // 
-            this.cbCheveretoUploaders.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbCheveretoUploaders.FormattingEnabled = true;
-            resources.ApplyResources(this.cbCheveretoUploaders, "cbCheveretoUploaders");
-            this.cbCheveretoUploaders.Name = "cbCheveretoUploaders";
-            this.cbCheveretoUploaders.SelectedIndexChanged += new System.EventHandler(this.cbCheveretoUploaders_SelectedIndexChanged);
             // 
             // cbCheveretoDirectURL
             // 
@@ -4838,13 +4726,6 @@ namespace ShareX.UploadersLib
             this.oauth2Imgur.CompleteButtonClicked += new ShareX.UploadersLib.OAuthControl.CompleteButtonClickedEventHandler(this.oauth2Imgur_CompleteButtonClicked);
             this.oauth2Imgur.ClearButtonClicked += new ShareX.UploadersLib.OAuthControl.ClearButtonclickedEventHandler(this.oauth2Imgur_ClearButtonClicked);
             this.oauth2Imgur.RefreshButtonClicked += new ShareX.UploadersLib.OAuthControl.RefreshButtonClickedEventHandler(this.oauth2Imgur_RefreshButtonClicked);
-            // 
-            // atcTinyPicAccountType
-            // 
-            resources.ApplyResources(this.atcTinyPicAccountType, "atcTinyPicAccountType");
-            this.atcTinyPicAccountType.Name = "atcTinyPicAccountType";
-            this.atcTinyPicAccountType.SelectedAccountType = ShareX.UploadersLib.AccountType.Anonymous;
-            this.atcTinyPicAccountType.AccountTypeChanged += new ShareX.UploadersLib.AccountTypeControl.AccountTypeChangedEventHandler(this.atcTinyPicAccountType_AccountTypeChanged);
             // 
             // oauthFlickr
             // 
@@ -5139,8 +5020,6 @@ namespace ShareX.UploadersLib
             this.tpImgur.PerformLayout();
             this.tpImageShack.ResumeLayout(false);
             this.tpImageShack.PerformLayout();
-            this.tpTinyPic.ResumeLayout(false);
-            this.tpTinyPic.PerformLayout();
             this.tpFlickr.ResumeLayout(false);
             this.tpFlickr.PerformLayout();
             this.tpPhotobucket.ResumeLayout(false);
@@ -5291,7 +5170,7 @@ namespace ShareX.UploadersLib
         private System.Windows.Forms.TabPage tpImageUploaders;
         private System.Windows.Forms.TabControl tcImageUploaders;
         private OAuthControl oauth2Imgur;
-        private System.Windows.Forms.ListView lvImgurAlbumList;
+        private ShareX.HelpersLib.MyListView lvImgurAlbumList;
         private System.Windows.Forms.ColumnHeader chImgurID;
         private System.Windows.Forms.ColumnHeader chImgurTitle;
         private System.Windows.Forms.ColumnHeader chImgurDescription;
@@ -5307,13 +5186,6 @@ namespace ShareX.UploadersLib
         private System.Windows.Forms.TextBox txtImageShackUsername;
         private System.Windows.Forms.TextBox txtImageShackPassword;
         private System.Windows.Forms.Label lblImageShackPassword;
-        private AccountTypeControl atcTinyPicAccountType;
-        private System.Windows.Forms.Button btnTinyPicLogin;
-        private System.Windows.Forms.TextBox txtTinyPicPassword;
-        private System.Windows.Forms.Label lblTinyPicPassword;
-        private System.Windows.Forms.TextBox txtTinyPicUsername;
-        private System.Windows.Forms.Label lblTinyPicUsername;
-        private System.Windows.Forms.Button btnTinyPicOpenMyImages;
         private System.Windows.Forms.GroupBox gbPhotobucketAlbumPath;
         private System.Windows.Forms.Button btnPhotobucketAddAlbum;
         private System.Windows.Forms.Button btnPhotobucketRemoveAlbum;
@@ -5433,8 +5305,6 @@ namespace ShareX.UploadersLib
         private System.Windows.Forms.Button btnTwitterNameUpdate;
         private System.Windows.Forms.Label lblPomfResultURL;
         private System.Windows.Forms.Label lblPomfUploadURL;
-        private System.Windows.Forms.Label lblPomfUploaders;
-        private System.Windows.Forms.ComboBox cbPomfUploaders;
         private System.Windows.Forms.TextBox txtPomfUploadURL;
         private System.Windows.Forms.TextBox txtPomfResultURL;
         private System.Windows.Forms.Button btnSeafileCheckAuthToken;
@@ -5475,7 +5345,6 @@ namespace ShareX.UploadersLib
         private System.Windows.Forms.NumericUpDown nudSeafileExpireDays;
         private System.Windows.Forms.Label lblSeafileDaysToExpire;
         private System.Windows.Forms.ComboBox cbSeafileAPIURL;
-        private System.Windows.Forms.Button btnPomfTest;
         private System.Windows.Forms.TextBox txtStreamablePassword;
         private System.Windows.Forms.TextBox txtStreamableUsername;
         private System.Windows.Forms.Label lblStreamableUsername;
@@ -5486,16 +5355,12 @@ namespace ShareX.UploadersLib
         private System.Windows.Forms.TextBox txtVgymeUserKey;
         private System.Windows.Forms.Label lvlVgymeUserKey;
         private System.Windows.Forms.LinkLabel llVgymeAccountDetailsPage;
-        private System.Windows.Forms.Label lblCheveretoUploaders;
-        private System.Windows.Forms.ComboBox cbCheveretoUploaders;
         private System.Windows.Forms.Label lblCheveretoUploadURLExample;
-        private System.Windows.Forms.Button btnCheveretoTestAll;
         private System.Windows.Forms.CheckBox cbPastebinRaw;
         private System.Windows.Forms.CheckBox cbGistUseRawURL;
         private System.Windows.Forms.CheckBox cbStreamableUseDirectURL;
         internal System.Windows.Forms.TabPage tpImgur;
         internal System.Windows.Forms.TabPage tpImageShack;
-        internal System.Windows.Forms.TabPage tpTinyPic;
         internal System.Windows.Forms.TabPage tpFlickr;
         internal System.Windows.Forms.TabPage tpPhotobucket;
         internal System.Windows.Forms.TabPage tpGooglePhotos;
@@ -5699,7 +5564,7 @@ namespace ShareX.UploadersLib
         private System.Windows.Forms.NumericUpDown txtOwnCloudExpiryTime;
         internal System.Windows.Forms.TabPage tpBackblazeB2;
         private System.Windows.Forms.TextBox txtB2CustomUrl;
-        private System.Windows.Forms.Label lblB2UrlPreview;
+        private System.Windows.Forms.Label lblB2UrlPreviewLabel;
         private System.Windows.Forms.CheckBox cbB2CustomUrl;
         private System.Windows.Forms.Label lblB2Bucket;
         private System.Windows.Forms.TextBox txtB2Bucket;
@@ -5709,7 +5574,6 @@ namespace ShareX.UploadersLib
         private System.Windows.Forms.Label lblB2ApplicationKey;
         private System.Windows.Forms.Label lblB2ApplicationKeyId;
         private System.Windows.Forms.TextBox txtB2ApplicationKeyId;
-        private System.Windows.Forms.TextBox txtB2UrlPreview;
         private System.Windows.Forms.LinkLabel lblB2ManageLink;
         private System.Windows.Forms.TextBox txtKuttAPIKey;
         private System.Windows.Forms.TextBox txtKuttHost;
@@ -5746,5 +5610,6 @@ namespace ShareX.UploadersLib
         private System.Windows.Forms.CheckBox cbGoogleCloudStorageStripExtensionVideo;
         private System.Windows.Forms.CheckBox cbGoogleCloudStorageSetPublicACL;
         private System.Windows.Forms.CheckBox cbGoogleCloudStorageStripExtensionImage;
+        private System.Windows.Forms.Label lblB2UrlPreview;
     }
 }

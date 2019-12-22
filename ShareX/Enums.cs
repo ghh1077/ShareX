@@ -63,6 +63,8 @@ namespace ShareX
         Korean,
         [Description("Español mexicano (Mexican Spanish)")]
         MexicanSpanish,
+        [Description("فارسی (Persian)")]
+        Persian,
         [Description("Português-Brasil (Portuguese-Brazil)")]
         PortugueseBrazil,
         [Description("Русский (Russian)")]
@@ -268,6 +270,11 @@ namespace ShareX
         Side, Bottom
     }
 
+    public enum ThumbnailTitleLocation
+    {
+        Top, Bottom
+    }
+
     public enum ScreenRecordState
     {
         Waiting, BeforeStart, AfterStart, AfterRecordingStart, Encoding
@@ -303,5 +310,11 @@ namespace ShareX
         None,
         OpenURL,
         OpenDebugLog
+    }
+
+    public enum TaskViewMode
+    {
+        ListView,
+        ThumbnailView
     }
 }

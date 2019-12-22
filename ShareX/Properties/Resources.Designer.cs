@@ -19,7 +19,7 @@ namespace ShareX.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -414,6 +414,16 @@ namespace ShareX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap application_list {
+            get {
+                object obj = ResourceManager.GetObject("application_list", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap application_monitor {
             get {
                 object obj = ResourceManager.GetObject("application_monitor", resourceCulture);
@@ -666,6 +676,16 @@ namespace ShareX.Properties {
         public static System.Drawing.Bitmap bin {
             get {
                 object obj = ResourceManager.GetObject("bin", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Bitcoin_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Bitcoin_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -990,19 +1010,9 @@ namespace ShareX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap Discord_Button_01 {
+        public static System.Drawing.Bitmap Discord_32x32 {
             get {
-                object obj = ResourceManager.GetObject("Discord_Button_01", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap Discord_Button_02 {
-            get {
-                object obj = ResourceManager.GetObject("Discord_Button_02", resourceCulture);
+                object obj = ResourceManager.GetObject("Discord_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1298,6 +1308,26 @@ namespace ShareX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap GitHub_Black_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("GitHub_Black_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap GitHub_White_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("GitHub_White_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap globe {
             get {
                 object obj = ResourceManager.GetObject("globe", resourceCulture);
@@ -1493,6 +1523,16 @@ namespace ShareX.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap image_split {
+            get {
+                object obj = ResourceManager.GetObject("image_split", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not write image to path {0}..
         /// </summary>
         public static string ImageData_Write_Error {
@@ -1546,6 +1586,16 @@ namespace ShareX.Properties {
         public static string IntegrationHelpers_UploadWithShareX {
             get {
                 return ResourceManager.GetString("IntegrationHelpers_UploadWithShareX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ir {
+            get {
+                object obj = ResourceManager.GetObject("ir", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -1927,6 +1977,16 @@ namespace ShareX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap Patreon_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Patreon_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap pencil {
             get {
                 object obj = ResourceManager.GetObject("pencil", resourceCulture);
@@ -2228,22 +2288,20 @@ namespace ShareX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized string similar to Switch to list view.
         /// </summary>
-        public static System.Drawing.Bitmap SupportUs_Button_01 {
+        public static string SwitchToListView {
             get {
-                object obj = ResourceManager.GetObject("SupportUs_Button_01", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetString("SwitchToListView", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized string similar to Switch to thumbnail view.
         /// </summary>
-        public static System.Drawing.Bitmap SupportUs_Button_02 {
+        public static string SwitchToThumbnailView {
             get {
-                object obj = ResourceManager.GetObject("SupportUs_Button_02", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetString("SwitchToThumbnailView", resourceCulture);
             }
         }
         
@@ -2499,6 +2557,16 @@ namespace ShareX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap Twitter_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Twitter_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap ua {
             get {
                 object obj = ResourceManager.GetObject("ua", resourceCulture);
@@ -2532,6 +2600,16 @@ namespace ShareX.Properties {
         public static System.Drawing.Bitmap ui_splitter {
             get {
                 object obj = ResourceManager.GetObject("ui_splitter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ui_thumbnail_title {
+            get {
+                object obj = ResourceManager.GetObject("ui_thumbnail_title", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

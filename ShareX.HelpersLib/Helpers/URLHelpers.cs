@@ -82,8 +82,13 @@ namespace ShareX.HelpersLib
             }
         }
 
-        public static string URLEncode(string text, bool isPath = false)
+        public static string URLEncode(string text, bool isPath = false, bool ignoreEmoji = false)
         {
+            if (ignoreEmoji)
+            {
+                return URLEncodeIgnoreEmoji(text, isPath);
+            }
+
             StringBuilder sb = new StringBuilder();
 
             if (!string.IsNullOrEmpty(text))
@@ -109,6 +114,30 @@ namespace ShareX.HelpersLib
                     {
                         sb.AppendFormat(CultureInfo.InvariantCulture, "%{0:X2}", (int)c);
                     }
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        public static string URLEncodeIgnoreEmoji(string text, bool isPath = false)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                string remainingText = text.Substring(i);
+
+                int emojiLength = Emoji.SearchEmoji(remainingText);
+
+                if (emojiLength > 0)
+                {
+                    sb.Append(remainingText.Substring(0, emojiLength));
+                    i += emojiLength - 1;
+                }
+                else
+                {
+                    sb.Append(URLEncode(remainingText.Substring(0, 1), isPath));
                 }
             }
 

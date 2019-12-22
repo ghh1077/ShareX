@@ -48,7 +48,8 @@ namespace ShareX
         public TaskSettingsForm(TaskSettings hotkeySetting, bool isDefault = false)
         {
             InitializeComponent();
-            Icon = ShareXResources.Icon;
+            ShareXResources.ApplyTheme(this);
+
             TaskSettings = hotkeySetting;
             IsDefault = isDefault;
 
@@ -781,7 +782,7 @@ namespace ShareX
 
         private void btnImageEffects_Click(object sender, EventArgs e)
         {
-            using (ImageEffectsForm imageEffectsForm = new ImageEffectsForm(ShareXResources.LogoBlack, TaskSettings.ImageSettings.ImageEffectPresets,
+            using (ImageEffectsForm imageEffectsForm = new ImageEffectsForm(null, TaskSettings.ImageSettings.ImageEffectPresets,
                 TaskSettings.ImageSettings.SelectedImageEffectPreset))
             {
                 imageEffectsForm.ShowDialog();
@@ -1057,6 +1058,8 @@ namespace ShareX
             {
                 form.DefaultToolsFolder = Program.ToolsFolder;
                 form.ShowDialog();
+
+                TaskSettings.CaptureSettings.FFmpegOptions = form.Options.FFmpeg;
             }
         }
 

@@ -30,7 +30,6 @@ using ShareX.IndexerLib;
 using ShareX.MediaLib;
 using ShareX.ScreenCaptureLib;
 using ShareX.UploadersLib;
-using ShareX.UploadersLib.OtherServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -397,6 +396,7 @@ namespace ShareX
         public string ScreenColorPickerFormat = "$hex";
         public IndexerSettings IndexerSettings = new IndexerSettings();
         public ImageCombinerOptions ImageCombinerOptions = new ImageCombinerOptions();
+        public VideoConverterOptions VideoConverterOptions = new VideoConverterOptions();
         public VideoThumbnailOptions VideoThumbnailOptions = new VideoThumbnailOptions();
     }
 
@@ -481,8 +481,8 @@ namespace ShareX
         [Category("Notifications"), DefaultValue(false), Description("Disable notifications.")]
         public bool DisableNotifications { get; set; }
 
-        [Category("Notifications"), DefaultValue(false), Description("If this option enabled then toast window or balloon tip won't be shown if active window is fullscreen.")]
-        public bool NotificationCheckIsActiveWindowFullscreen { get; set; }
+        [Category("Notifications"), DefaultValue(false), Description("If active window is fullscreen then toast window or balloon tip won't be shown.")]
+        public bool DisableNotificationsOnFullscreen { get; set; }
 
         private float toastWindowDuration;
 
@@ -495,7 +495,7 @@ namespace ShareX
             }
             set
             {
-                toastWindowDuration = value.Between(0, 30);
+                toastWindowDuration = value.Clamp(0, 30);
             }
         }
 
@@ -510,7 +510,7 @@ namespace ShareX
             }
             set
             {
-                toastWindowFadeDuration = value.Between(0, 30);
+                toastWindowFadeDuration = value.Clamp(0, 30);
             }
         }
 

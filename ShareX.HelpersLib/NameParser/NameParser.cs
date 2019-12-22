@@ -141,6 +141,7 @@ namespace ShareX.HelpersLib
                 .Replace(CodeMenuEntryFilename.mi.ToPrefixString(), Helpers.AddZeroes(dt.Minute))
                 .Replace(CodeMenuEntryFilename.s.ToPrefixString(), Helpers.AddZeroes(dt.Second))
                 .Replace(CodeMenuEntryFilename.ms.ToPrefixString(), Helpers.AddZeroes(dt.Millisecond, 3))
+                .Replace(CodeMenuEntryFilename.wy.ToPrefixString(), dt.WeekOfYear().ToString())
                 .Replace(CodeMenuEntryFilename.w2.ToPrefixString(), CultureInfo.InvariantCulture.DateTimeFormat.GetDayName(dt.DayOfWeek))
                 .Replace(CodeMenuEntryFilename.w.ToPrefixString(), CultureInfo.CurrentCulture.DateTimeFormat.GetDayName(dt.DayOfWeek))
                 .Replace(CodeMenuEntryFilename.pm.ToPrefixString(), dt.Hour >= 12 ? "PM" : "AM");
@@ -265,6 +266,11 @@ namespace ShareX.HelpersLib
                 });
             }
 
+            foreach (Tuple<string, int> entry in ListEntryWithValue(result, CodeMenuEntryFilename.rna.ToPrefixString()))
+            {
+                result = result.ReplaceAll(entry.Item1, () => Helpers.RepeatGenerator(entry.Item2, () => Helpers.GetRandomChar(Helpers.Base56).ToString()));
+            }
+
             foreach (Tuple<string, int> entry in ListEntryWithValue(result, CodeMenuEntryFilename.rn.ToPrefixString()))
             {
                 result = result.ReplaceAll(entry.Item1, () => Helpers.RepeatGenerator(entry.Item2, () => Helpers.GetRandomChar(Helpers.Numbers).ToString()));
@@ -285,12 +291,19 @@ namespace ShareX.HelpersLib
                 result = result.ReplaceAll(entry.Item1, () => Helpers.RepeatGenerator(entry.Item2, () => Helpers.GetRandomChar(Helpers.Hexadecimal.ToUpperInvariant()).ToString()));
             }
 
+            foreach (Tuple<string, int> entry in ListEntryWithValue(result, CodeMenuEntryFilename.remoji.ToPrefixString()))
+            {
+                result = result.ReplaceAll(entry.Item1, () => Helpers.RepeatGenerator(entry.Item2, () => MathHelpers.CryptoRandomPick(Emoji.Emojis)));
+            }
+
+            result = result.ReplaceAll(CodeMenuEntryFilename.rna.ToPrefixString(), () => Helpers.GetRandomChar(Helpers.Base56).ToString());
             result = result.ReplaceAll(CodeMenuEntryFilename.rn.ToPrefixString(), () => Helpers.GetRandomChar(Helpers.Numbers).ToString());
             result = result.ReplaceAll(CodeMenuEntryFilename.ra.ToPrefixString(), () => Helpers.GetRandomChar(Helpers.Alphanumeric).ToString());
             result = result.ReplaceAll(CodeMenuEntryFilename.rx.ToPrefixString(), () => Helpers.GetRandomChar(Helpers.Hexadecimal.ToLowerInvariant()).ToString());
             result = result.ReplaceAll(CodeMenuEntryFilename.rx.ToPrefixString().Replace('x', 'X'), () => Helpers.GetRandomChar(Helpers.Hexadecimal.ToUpperInvariant()).ToString());
             result = result.ReplaceAll(CodeMenuEntryFilename.guid.ToPrefixString().ToLowerInvariant(), () => Guid.NewGuid().ToString().ToLowerInvariant());
             result = result.ReplaceAll(CodeMenuEntryFilename.guid.ToPrefixString().ToUpperInvariant(), () => Guid.NewGuid().ToString().ToUpperInvariant());
+            result = result.ReplaceAll(CodeMenuEntryFilename.remoji.ToPrefixString(), () => MathHelpers.CryptoRandomPick(Emoji.Emojis));
 
             if (Type == NameParserType.FolderPath)
             {

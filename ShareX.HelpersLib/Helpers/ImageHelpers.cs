@@ -130,9 +130,12 @@ namespace ShareX.HelpersLib
             bmp.SetResolution(img.HorizontalResolution, img.VerticalResolution);
 
             using (Graphics g = Graphics.FromImage(bmp))
-            using (img)
             {
-                g.Clear(backColor);
+                if (backColor.A > 0)
+                {
+                    g.Clear(backColor);
+                }
+
                 g.SetHighQuality();
                 g.DrawImage(img, newX, newY, newWidth, newHeight);
             }
@@ -554,9 +557,9 @@ namespace ShareX.HelpersLib
 
         public static Bitmap AddReflection(Image img, int percentage, int maxAlpha, int minAlpha)
         {
-            percentage = percentage.Between(1, 100);
-            maxAlpha = maxAlpha.Between(0, 255);
-            minAlpha = minAlpha.Between(0, 255);
+            percentage = percentage.Clamp(1, 100);
+            maxAlpha = maxAlpha.Clamp(0, 255);
+            minAlpha = minAlpha.Clamp(0, 255);
 
             Bitmap reflection;
 
@@ -610,6 +613,24 @@ namespace ShareX.HelpersLib
             }
 
             using (LinearGradientBrush brush = new LinearGradientBrush(new Rectangle(0, 0, width, height), fromBorderColor, toBorderColor, gradientType))
+            using (Pen borderPen = new Pen(brush, borderSize) { Alignment = PenAlignment.Inset })
+            {
+                return DrawBorder(img, borderPen, borderType);
+            }
+        }
+
+        public static Image DrawBorder(Image img, GradientInfo gradientInfo, int borderSize, BorderType borderType)
+        {
+            int width = img.Width;
+            int height = img.Height;
+
+            if (borderType == BorderType.Outside)
+            {
+                width += borderSize * 2;
+                height += borderSize * 2;
+            }
+
+            using (LinearGradientBrush brush = gradientInfo.GetGradientBrush(new Rectangle(0, 0, width, height)))
             using (Pen borderPen = new Pen(brush, borderSize) { Alignment = PenAlignment.Inset })
             {
                 return DrawBorder(img, borderPen, borderType);
@@ -679,6 +700,14 @@ namespace ShareX.HelpersLib
             }
         }
 
+        public static Bitmap FillBackground(Image img, GradientInfo gradientInfo)
+        {
+            using (LinearGradientBrush brush = gradientInfo.GetGradientBrush(new Rectangle(0, 0, img.Width, img.Height)))
+            {
+                return FillBackground(img, brush);
+            }
+        }
+
         public static Bitmap FillBackground(Image img, Brush brush)
         {
             Bitmap result = img.CreateEmptyBitmap();
@@ -687,7 +716,6 @@ namespace ShareX.HelpersLib
             using (img)
             {
                 g.FillRectangle(brush, 0, 0, result.Width, result.Height);
-                g.SetHighQuality();
                 g.DrawImage(img, 0, 0, result.Width, result.Height);
             }
 
@@ -699,12 +727,12 @@ namespace ShareX.HelpersLib
             return DrawCheckers(img, 10, SystemColors.ControlLight, SystemColors.ControlLightLight);
         }
 
-        public static Image DrawCheckers(Image img, int size, Color color1, Color color2)
+        public static Image DrawCheckers(Image img, int checkerSize, Color checkerColor1, Color checkerColor2)
         {
             Bitmap bmp = img.CreateEmptyBitmap();
 
             using (Graphics g = Graphics.FromImage(bmp))
-            using (Image checker = CreateCheckerPattern(size, size, color1, color2))
+            using (Image checker = CreateCheckerPattern(checkerSize, checkerSize, checkerColor1, checkerColor2))
             using (Brush checkerBrush = new TextureBrush(checker, WrapMode.Tile))
             using (img)
             {
@@ -718,10 +746,15 @@ namespace ShareX.HelpersLib
 
         public static Image DrawCheckers(int width, int height)
         {
+            return DrawCheckers(width, height, 10, SystemColors.ControlLight, SystemColors.ControlLightLight);
+        }
+
+        public static Image DrawCheckers(int width, int height, int checkerSize, Color checkerColor1, Color checkerColor2)
+        {
             Bitmap bmp = new Bitmap(width, height);
 
             using (Graphics g = Graphics.FromImage(bmp))
-            using (Image checker = CreateCheckerPattern())
+            using (Image checker = CreateCheckerPattern(checkerSize, checkerSize, checkerColor1, checkerColor2))
             using (Brush checkerBrush = new TextureBrush(checker, WrapMode.Tile))
             {
                 g.FillRectangle(checkerBrush, new Rectangle(0, 0, bmp.Width, bmp.Height));
@@ -740,13 +773,13 @@ namespace ShareX.HelpersLib
             return CreateCheckerPattern(width, height, SystemColors.ControlLight, SystemColors.ControlLightLight);
         }
 
-        private static Image CreateCheckerPattern(int width, int height, Color color1, Color color2)
+        public static Image CreateCheckerPattern(int width, int height, Color checkerColor1, Color checkerColor2)
         {
             Bitmap bmp = new Bitmap(width * 2, height * 2);
 
             using (Graphics g = Graphics.FromImage(bmp))
-            using (Brush brush1 = new SolidBrush(color1))
-            using (Brush brush2 = new SolidBrush(color2))
+            using (Brush brush1 = new SolidBrush(checkerColor1))
+            using (Brush brush2 = new SolidBrush(checkerColor2))
             {
                 g.FillRectangle(brush1, 0, 0, width, height);
                 g.FillRectangle(brush1, width, height, width, height);
@@ -781,27 +814,21 @@ namespace ShareX.HelpersLib
 
         public static bool AddMetadata(Image img, int id, string text)
         {
-            PropertyItem pi;
-
             try
             {
-                pi = (PropertyItem)typeof(PropertyItem).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { }, null).Invoke(null);
+                PropertyItem pi = (PropertyItem)typeof(PropertyItem).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { }, null).Invoke(null);
                 pi.Id = id;
                 pi.Len = text.Length + 1;
                 pi.Type = 2;
                 byte[] bytesText = Encoding.ASCII.GetBytes(text + " ");
                 bytesText[bytesText.Length - 1] = 0;
                 pi.Value = bytesText;
-
-                if (pi != null)
-                {
-                    img.SetPropertyItem(pi);
-                    return true;
-                }
+                img.SetPropertyItem(pi);
+                return true;
             }
             catch (Exception e)
             {
-                DebugHelper.WriteException(e, "Reflection failed.");
+                DebugHelper.WriteException(e, "AddMetadata reflection failed.");
             }
 
             return false;
@@ -1109,7 +1136,7 @@ namespace ShareX.HelpersLib
                                 {
                                     ColorBgra color = unsafeBitmap.GetPixel(x2, y2);
 
-                                    float pixelWeight = color.Alpha / 255;
+                                    float pixelWeight = color.Alpha / 255f;
 
                                     r += color.Red * pixelWeight;
                                     g += color.Green * pixelWeight;
@@ -1492,6 +1519,37 @@ namespace ShareX.HelpersLib
             }
         }
 
+        public static Bitmap Slice(Image img, int minSliceHeight, int maxSliceHeight, int minSliceShift, int maxSliceShift)
+        {
+            Bitmap result = img.CreateEmptyBitmap();
+
+            using (Graphics g = Graphics.FromImage(result))
+            {
+                int y = 0;
+
+                while (y < img.Height)
+                {
+                    Rectangle sourceRect = new Rectangle(0, y, img.Width, MathHelpers.Random(minSliceHeight, maxSliceHeight));
+                    Rectangle destRect = sourceRect;
+
+                    if (MathHelpers.Random(1) == 0) // Shift left
+                    {
+                        destRect.X = MathHelpers.Random(-maxSliceShift, -minSliceShift);
+                    }
+                    else // Shift right
+                    {
+                        destRect.X = MathHelpers.Random(minSliceShift, maxSliceShift);
+                    }
+
+                    g.DrawImage(img, destRect, sourceRect, GraphicsUnit.Pixel);
+
+                    y += sourceRect.Height;
+                }
+            }
+
+            return result;
+        }
+
         public static string OpenImageFileDialog(Form form = null)
         {
             string[] images = OpenImageFileDialog(false, form);
@@ -1566,6 +1624,9 @@ namespace ShareX.HelpersLib
         {
             using (SaveFileDialog sfd = new SaveFileDialog())
             {
+                sfd.Filter = "PNG (*.png)|*.png|JPEG (*.jpg, *.jpeg, *.jpe, *.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif|GIF (*.gif)|*.gif|BMP (*.bmp)|*.bmp|TIFF (*.tif, *.tiff)|*.tif;*.tiff";
+                sfd.DefaultExt = "png";
+            
                 string initialDirectory = null;
 
                 if (useLastDirectory && !string.IsNullOrEmpty(HelpersOptions.LastSaveDirectory) && Directory.Exists(HelpersOptions.LastSaveDirectory))
@@ -1582,12 +1643,40 @@ namespace ShareX.HelpersLib
                         initialDirectory = folder;
                     }
 
-                    sfd.FileName = Path.GetFileNameWithoutExtension(filePath);
+                    sfd.FileName = Path.GetFileName(filePath);
+
+                    string ext = Helpers.GetFilenameExtension(filePath);
+
+                    if (!string.IsNullOrEmpty(ext))
+                    {
+                        ext = ext.ToLowerInvariant();
+
+                        switch (ext)
+                        {
+                            case "png":
+                                sfd.FilterIndex = 1;
+                                break;
+                            case "jpg":
+                            case "jpeg":
+                            case "jpe":
+                            case "jfif":
+                                sfd.FilterIndex = 2;
+                                break;
+                            case "gif":
+                                sfd.FilterIndex = 3;
+                                break;
+                            case "bmp":
+                                sfd.FilterIndex = 4;
+                                break;
+                            case "tif":
+                            case "tiff":
+                                sfd.FilterIndex = 5;
+                                break;
+                        }
+                    }
                 }
 
                 sfd.InitialDirectory = initialDirectory;
-                sfd.DefaultExt = "png";
-                sfd.Filter = "PNG (*.png)|*.png|JPEG (*.jpg, *.jpeg, *.jpe, *.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif|GIF (*.gif)|*.gif|BMP (*.bmp)|*.bmp|TIFF (*.tif, *.tiff)|*.tif;*.tiff";
 
                 if (sfd.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(sfd.FileName))
                 {
@@ -1686,6 +1775,33 @@ namespace ShareX.HelpersLib
             }
 
             return bmp;
+        }
+
+        public static List<Image> SplitImage(Image img, int rowCount, int columnCount)
+        {
+            List<Image> images = new List<Image>();
+
+            int width = img.Width / columnCount;
+            int height = img.Height / rowCount;
+
+            for (int y = 0; y < rowCount; y++)
+            {
+                for (int x = 0; x < columnCount; x++)
+                {
+                    Bitmap bmp = new Bitmap(width, height);
+
+                    using (Graphics g = Graphics.FromImage(bmp))
+                    {
+                        Rectangle destRect = new Rectangle(0, 0, width, height);
+                        Rectangle srcRect = new Rectangle(x * width, y * height, width, height);
+                        g.DrawImage(img, destRect, srcRect, GraphicsUnit.Pixel);
+                    }
+
+                    images.Add(bmp);
+                }
+            }
+
+            return images;
         }
 
         public static Image CreateColorPickerIcon(Color color, Rectangle rect, int holeSize = 0)

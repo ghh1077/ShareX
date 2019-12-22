@@ -608,30 +608,17 @@ namespace ShareX
             AddExternalProgramFromRegistry(taskSettings, "Adobe Photoshop", "Photoshop.exe");
             AddExternalProgramFromRegistry(taskSettings, "IrfanView", "i_view32.exe");
             AddExternalProgramFromRegistry(taskSettings, "XnView", "xnview.exe");
-            AddExternalProgramFromFile(taskSettings, "OptiPNG", "optipng.exe");
         }
 
-        private static void AddExternalProgramFromFile(TaskSettings taskSettings, string name, string filename, string args = "")
+        private static void AddExternalProgramFromRegistry(TaskSettings taskSettings, string name, string fileName)
         {
             if (!taskSettings.ExternalPrograms.Exists(x => x.Name == name))
             {
-                if (File.Exists(filename))
+                string filePath = RegistryHelpers.SearchProgramPath(fileName);
+
+                if (!string.IsNullOrEmpty(filePath))
                 {
-                    DebugHelper.WriteLine("Found program: " + filename);
-
-                    taskSettings.ExternalPrograms.Add(new ExternalProgram(name, filename, args));
-                }
-            }
-        }
-
-        private static void AddExternalProgramFromRegistry(TaskSettings taskSettings, string name, string filename)
-        {
-            if (!taskSettings.ExternalPrograms.Exists(x => x.Name == name))
-            {
-                ExternalProgram externalProgram = RegistryHelpers.FindProgram(name, filename);
-
-                if (externalProgram != null)
-                {
+                    ExternalProgram externalProgram = new ExternalProgram(name, filePath);
                     taskSettings.ExternalPrograms.Add(externalProgram);
                 }
             }
@@ -639,7 +626,7 @@ namespace ShareX
 
         public static Icon GetProgressIcon(int percentage)
         {
-            percentage = percentage.Between(0, 99);
+            percentage = percentage.Clamp(0, 99);
 
             Size size = SystemInformation.SmallIconSize;
             using (Bitmap bmp = new Bitmap(size.Width, size.Height))
@@ -658,8 +645,8 @@ namespace ShareX
                 using (Font font = new Font("Arial", 10))
                 using (StringFormat sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
                 {
-                    g.DrawString(percentage.ToString(), font, Brushes.Black, size.Width / 2, size.Height / 2, sf);
-                    g.DrawString(percentage.ToString(), font, Brushes.White, size.Width / 2, (size.Height / 2) - 1, sf);
+                    g.DrawString(percentage.ToString(), font, Brushes.Black, size.Width / 2f, size.Height / 2f, sf);
+                    g.DrawString(percentage.ToString(), font, Brushes.White, size.Width / 2f, (size.Height / 2f) - 1, sf);
                 }
 
                 return Icon.FromHandle(bmp.GetHicon());
@@ -846,12 +833,30 @@ namespace ShareX
             imageCombinerForm.Show();
         }
 
-        public static void OpenImageThumbnailer(TaskSettings taskSettings = null)
+        public static void OpenImageSplitter()
+        {
+            ImageSplitterForm imageSplitterForm = new ImageSplitterForm();
+            imageSplitterForm.Show();
+        }
+
+        public static void OpenImageThumbnailer()
+        {
+            ImageThumbnailerForm imageThumbnailerForm = new ImageThumbnailerForm();
+            imageThumbnailerForm.Show();
+        }
+
+        public static void OpenVideoConverter(TaskSettings taskSettings = null)
         {
             if (taskSettings == null) taskSettings = TaskSettings.GetDefaultTaskSettings();
 
-            ImageThumbnailerForm imageThumbnailerForm = new ImageThumbnailerForm();
-            imageThumbnailerForm.Show();
+            if (!CheckFFmpeg(taskSettings))
+            {
+                return;
+            }
+
+            VideoConverterForm videoConverterForm = new VideoConverterForm(taskSettings.CaptureSettings.FFmpegOptions.FFmpegPath,
+                taskSettings.ToolsSettingsReference.VideoConverterOptions);
+            videoConverterForm.Show();
         }
 
         public static void OpenVideoThumbnailer(TaskSettings taskSettings = null)
@@ -864,7 +869,8 @@ namespace ShareX
             }
 
             taskSettings.ToolsSettingsReference.VideoThumbnailOptions.DefaultOutputDirectory = taskSettings.CaptureFolder;
-            VideoThumbnailerForm thumbnailerForm = new VideoThumbnailerForm(taskSettings.CaptureSettings.FFmpegOptions.FFmpegPath, taskSettings.ToolsSettingsReference.VideoThumbnailOptions);
+            VideoThumbnailerForm thumbnailerForm = new VideoThumbnailerForm(taskSettings.CaptureSettings.FFmpegOptions.FFmpegPath,
+                taskSettings.ToolsSettingsReference.VideoThumbnailOptions);
             thumbnailerForm.ThumbnailsTaken += thumbnails =>
             {
                 if (taskSettings.ToolsSettingsReference.VideoThumbnailOptions.UploadThumbnails)
@@ -1022,26 +1028,26 @@ namespace ShareX
             if (taskSettings == null) taskSettings = Program.DefaultTaskSettings;
 
             string filePath = ImageHelpers.OpenImageFileDialog();
-            Image img = null;
+
             if (!string.IsNullOrEmpty(filePath))
             {
-                img = ImageHelpers.LoadImage(filePath);
-            }
+                Image img = ImageHelpers.LoadImage(filePath);
 
-            if (img != null)
-            {
-                if (img.PixelFormat.HasFlag(PixelFormat.Indexed))
+                if (img != null)
                 {
-                    MessageBox.Show("Unsupported pixel format: " + img.PixelFormat, "ShareX - Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    using (ImageEffectsForm imageEffectsForm = new ImageEffectsForm(img, taskSettings.ImageSettings.ImageEffectPresets,
-                        taskSettings.ImageSettings.SelectedImageEffectPreset))
+                    if (img.PixelFormat.HasFlag(PixelFormat.Indexed))
                     {
-                        imageEffectsForm.EnableToolMode(x => UploadManager.RunImageTask(x, taskSettings));
-                        imageEffectsForm.ShowDialog();
-                        //taskSettings.ImageSettings.SelectedImageEffectPreset = imageEffectsForm.SelectedPresetIndex;
+                        MessageBox.Show("Unsupported pixel format: " + img.PixelFormat, "ShareX - Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        using (ImageEffectsForm imageEffectsForm = new ImageEffectsForm(img, taskSettings.ImageSettings.ImageEffectPresets,
+                            taskSettings.ImageSettings.SelectedImageEffectPreset))
+                        {
+                            imageEffectsForm.EnableToolMode(x => UploadManager.RunImageTask(x, taskSettings), filePath);
+                            imageEffectsForm.ShowDialog();
+                            //taskSettings.ImageSettings.SelectedImageEffectPreset = imageEffectsForm.SelectedPresetIndex;
+                        }
                     }
                 }
             }

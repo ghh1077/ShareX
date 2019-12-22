@@ -150,6 +150,15 @@ namespace ShareX.ScreenCaptureLib.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close (Esc).
+        /// </summary>
+        internal static string CloseEsc {
+            get {
+                return ResourceManager.GetString("CloseEsc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap control {
@@ -374,15 +383,6 @@ namespace ShareX.ScreenCaptureLib.Properties {
             get {
                 object obj = ResourceManager.GetObject("exclamation_button", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to FFmpeg error.
-        /// </summary>
-        internal static string FFmpegHelper_Record_FFmpeg_error {
-            get {
-                return ResourceManager.GetString("FFmpegHelper_Record_FFmpeg_error", resourceCulture);
             }
         }
         
@@ -827,6 +827,25 @@ namespace ShareX.ScreenCaptureLib.Properties {
         internal static string LightResizeNodes {
             get {
                 return ResourceManager.GetString("LightResizeNodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap magnifier_zoom {
+            get {
+                object obj = ResourceManager.GetObject("magnifier_zoom", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Magnify strength:.
+        /// </summary>
+        internal static string MagnifyStrength {
+            get {
+                return ResourceManager.GetString("MagnifyStrength", resourceCulture);
             }
         }
         
@@ -1399,15 +1418,6 @@ namespace ShareX.ScreenCaptureLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Editor background color....
-        /// </summary>
-        internal static string ShapeManager_CreateToolbar_EditorBackgroundColor {
-            get {
-                return ResourceManager.GetString("ShapeManager_CreateToolbar_EditorBackgroundColor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Editor start mode:.
         /// </summary>
         internal static string ShapeManager_CreateToolbar_EditorStartMode {
@@ -1480,7 +1490,7 @@ namespace ShareX.ScreenCaptureLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Interpolation mode.
+        ///   Looks up a localized string similar to Interpolation mode:.
         /// </summary>
         internal static string ShapeManager_CreateToolbar_InterpolationMode {
             get {

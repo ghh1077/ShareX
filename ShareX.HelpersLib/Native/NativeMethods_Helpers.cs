@@ -213,7 +213,7 @@ namespace ShareX.HelpersLib
         public static bool GetExtendedFrameBounds(IntPtr handle, out Rectangle rectangle)
         {
             RECT rect;
-            int result = DwmGetWindowAttribute(handle, (int)DwmWindowAttribute.ExtendedFrameBounds, out rect, Marshal.SizeOf(typeof(RECT)));
+            int result = DwmGetWindowAttribute(handle, (int)DwmWindowAttribute.DWMWA_EXTENDED_FRAME_BOUNDS, out rect, Marshal.SizeOf(typeof(RECT)));
             rectangle = rect;
             return result == 0;
         }
@@ -221,14 +221,31 @@ namespace ShareX.HelpersLib
         public static bool GetNCRenderingEnabled(IntPtr handle)
         {
             bool enabled;
-            int result = DwmGetWindowAttribute(handle, (int)DwmWindowAttribute.NCRenderingEnabled, out enabled, sizeof(bool));
+            int result = DwmGetWindowAttribute(handle, (int)DwmWindowAttribute.DWMWA_NCRENDERING_ENABLED, out enabled, sizeof(bool));
             return result == 0 && enabled;
         }
 
         public static void SetNCRenderingPolicy(IntPtr handle, DwmNCRenderingPolicy renderingPolicy)
         {
             int renderPolicy = (int)renderingPolicy;
-            DwmSetWindowAttribute(handle, (int)DwmWindowAttribute.NCRenderingPolicy, ref renderPolicy, sizeof(int));
+            DwmSetWindowAttribute(handle, (int)DwmWindowAttribute.DWMWA_NCRENDERING_POLICY, ref renderPolicy, sizeof(int));
+        }
+
+        public static bool UseImmersiveDarkMode(IntPtr handle, bool enabled)
+        {
+            if (Helpers.IsWindows10OrGreater(17763))
+            {
+                var attribute = DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1;
+                if (Helpers.IsWindows10OrGreater(18985))
+                {
+                    attribute = DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE;
+                }
+
+                int useImmersiveDarkMode = enabled ? 1 : 0;
+                return DwmSetWindowAttribute(handle, (int)attribute, ref useImmersiveDarkMode, sizeof(int)) == 0;
+            }
+
+            return false;
         }
 
         public static Rectangle GetWindowRect(IntPtr handle)
@@ -348,7 +365,7 @@ namespace ShareX.HelpersLib
             if (IsDWMEnabled())
             {
                 int cloaked;
-                int result = DwmGetWindowAttribute(handle, (int)DwmWindowAttribute.Cloaked, out cloaked, sizeof(int));
+                int result = DwmGetWindowAttribute(handle, (int)DwmWindowAttribute.DWMWA_CLOAKED, out cloaked, sizeof(int));
                 return result == 0 && cloaked != 0;
             }
 
@@ -504,6 +521,47 @@ namespace ShareX.HelpersLib
             tSec.nLength = Marshal.SizeOf(tSec);
 
             return CreateProcess(path, $"\"{path}\" {arguments}", ref pSec, ref tSec, false, (uint)flags, IntPtr.Zero, null, ref sInfo, out pInfo);
+        }
+
+        public static Icon GetFileIcon(string filePath, bool isSmallIcon)
+        {
+            SHFILEINFO shfi = new SHFILEINFO();
+
+            SHGFI flags = SHGFI.Icon;
+
+            if (isSmallIcon)
+            {
+                flags |= SHGFI.SmallIcon;
+            }
+            else
+            {
+                flags |= SHGFI.LargeIcon;
+            }
+
+            SHGetFileInfo(filePath, 0, ref shfi, (uint)Marshal.SizeOf(shfi), (uint)flags);
+
+            Icon icon = (Icon)Icon.FromHandle(shfi.hIcon).Clone();
+            DestroyIcon(shfi.hIcon);
+            return icon;
+        }
+
+        public static Icon GetJumboFileIcon(string filePath, bool jumboSize = true)
+        {
+            SHFILEINFO shfi = new SHFILEINFO();
+
+            SHGFI flags = SHGFI.SysIconIndex | SHGFI.UseFileAttributes;
+            SHGetFileInfo(filePath, 0, ref shfi, (uint)Marshal.SizeOf(shfi), (uint)flags);
+
+            IImageList spiml = null;
+            Guid guil = new Guid(NativeConstants.IID_IImageList2);
+
+            SHGetImageList(jumboSize ? NativeConstants.SHIL_JUMBO : NativeConstants.SHIL_EXTRALARGE, ref guil, ref spiml);
+            IntPtr hIcon = IntPtr.Zero;
+            spiml.GetIcon(shfi.iIcon, NativeConstants.ILD_TRANSPARENT | NativeConstants.ILD_IMAGE, ref hIcon);
+
+            Icon icon = (Icon)Icon.FromHandle(hIcon).Clone();
+            DestroyIcon(hIcon);
+            return icon;
         }
     }
 }

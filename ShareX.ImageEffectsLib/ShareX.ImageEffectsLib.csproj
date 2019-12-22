@@ -109,6 +109,7 @@
     <Compile Include="Adjustments\MatrixColor.cs" />
     <Compile Include="Drawings\DrawCheckerboard.cs" />
     <Compile Include="Drawings\DrawImage.cs" />
+    <Compile Include="Drawings\DrawParticles.cs" />
     <Compile Include="Drawings\DrawText.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Filters\EdgeDetect.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Filters\Outline.cs" />
     <Compile Include="Filters\Pixelate.cs" />
     <Compile Include="Filters\Sharpen.cs" />
+    <Compile Include="Filters\Slice.cs" />
     <Compile Include="Filters\Smooth.cs" />
     <Compile Include="Adjustments\Brightness.cs" />
     <Compile Include="Adjustments\Colorize.cs" />
@@ -179,6 +181,9 @@
       <DependentUpon>ImageEffectsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ImageEffectsForm.es.resx">
+      <DependentUpon>ImageEffectsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImageEffectsForm.fa-IR.resx">
       <DependentUpon>ImageEffectsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ImageEffectsForm.fr.resx">
@@ -246,7 +251,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.1</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

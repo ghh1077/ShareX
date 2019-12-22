@@ -36,11 +36,11 @@ namespace ShareX
         public TextUploadForm(string content = null)
         {
             InitializeComponent();
-            Icon = ShareXResources.Icon;
+            ShareXResources.ApplyTheme(this);
 
             if (string.IsNullOrEmpty(content) && Clipboard.ContainsText())
             {
-                content = Clipboard.GetText();
+                content = ClipboardHelpers.GetText();
             }
 
             if (!string.IsNullOrEmpty(content))

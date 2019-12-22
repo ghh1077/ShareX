@@ -24,6 +24,7 @@
 #endregion License Information (GPL v3)
 
 using ShareX.HelpersLib;
+using ShareX.MediaLib;
 using System;
 using System.Drawing;
 using System.Globalization;
@@ -88,7 +89,6 @@ namespace ShareX.ScreenCaptureLib
             }
 
             StringBuilder args = new StringBuilder();
-            args.Append("-y "); // -y for overwrite file
             args.Append("-rtbufsize 150M "); // default real time buffer size was 3041280 (3M)
 
             string fps;
@@ -106,7 +106,7 @@ namespace ShareX.ScreenCaptureLib
             {
                 if (FFmpeg.IsVideoSourceSelected)
                 {
-                    if (FFmpeg.VideoSource.Equals(FFmpegHelper.SourceGDIGrab, StringComparison.InvariantCultureIgnoreCase))
+                    if (FFmpeg.VideoSource.Equals(FFmpegCLIManager.SourceGDIGrab, StringComparison.InvariantCultureIgnoreCase))
                     {
                         // http://ffmpeg.org/ffmpeg-devices.html#gdigrab
                         args.AppendFormat("-f gdigrab -framerate {0} -offset_x {1} -offset_y {2} -video_size {3}x{4} -draw_mouse {5} -i desktop ",
@@ -158,6 +158,10 @@ namespace ShareX.ScreenCaptureLib
                     {
                         videoCodec = FFmpegVideoCodec.libx264.ToString();
                     }
+                    else if (FFmpeg.VideoCodec == FFmpegVideoCodec.libvpx_vp9)
+                    {
+                        videoCodec = "libvpx-vp9";
+                    }
                     else
                     {
                         videoCodec = FFmpeg.VideoCodec.ToString();
@@ -180,13 +184,14 @@ namespace ShareX.ScreenCaptureLib
                         case FFmpegVideoCodec.libx264: // https://trac.ffmpeg.org/wiki/Encode/H.264
                         case FFmpegVideoCodec.libx265: // https://trac.ffmpeg.org/wiki/Encode/H.265
                             args.AppendFormat("-preset {0} ", FFmpeg.x264_Preset);
-                            args.AppendFormat("-tune {0} ", FFmpegTune.zerolatency);
+                            if (IsRecording) args.AppendFormat("-tune {0} ", FFmpegTune.zerolatency);
                             args.AppendFormat("-crf {0} ", FFmpeg.x264_CRF);
                             args.AppendFormat("-pix_fmt {0} ", "yuv420p"); // -pix_fmt yuv420p required otherwise can't stream in Chrome
                             args.AppendFormat("-movflags {0} ", "+faststart"); // This will move some information to the beginning of your file and allow the video to begin playing before it is completely downloaded by the viewer
                             break;
                         case FFmpegVideoCodec.libvpx: // https://trac.ffmpeg.org/wiki/Encode/VP8
-                            args.AppendFormat("-deadline {0} ", "realtime");
+                        case FFmpegVideoCodec.libvpx_vp9: // https://trac.ffmpeg.org/wiki/Encode/VP9
+                            if (IsRecording) args.AppendFormat("-deadline {0} ", "realtime");
                             args.AppendFormat("-b:v {0}k ", FFmpeg.VPx_bitrate);
                             args.AppendFormat("-pix_fmt {0} ", "yuv420p"); // -pix_fmt yuv420p required otherwise causing issues in Chrome related to WebM transparency support
                             break;
@@ -199,15 +204,6 @@ namespace ShareX.ScreenCaptureLib
                             args.AppendFormat("-b:v {0}k ", FFmpeg.NVENC_bitrate);
                             args.AppendFormat("-pix_fmt {0} ", "yuv420p");
                             break;
-                        case FFmpegVideoCodec.libwebp: // https://www.ffmpeg.org/ffmpeg-codecs.html#libwebp
-                            args.AppendFormat("-lossless {0} ", "0");
-                            args.AppendFormat("-preset {0} ", "default");
-                            args.AppendFormat("-loop {0} ", "0");
-                            break;
-                        case FFmpegVideoCodec.apng:
-                            args.Append("-f apng ");
-                            args.AppendFormat("-plays {0} ", "0");
-                            break;
                         case FFmpegVideoCodec.h264_amf:
                         case FFmpegVideoCodec.hevc_amf:
                             args.AppendFormat("-usage {0} ", FFmpeg.AMF_usage);
@@ -219,6 +215,15 @@ namespace ShareX.ScreenCaptureLib
                             args.AppendFormat("-preset {0} ", FFmpeg.QSV_preset);
                             args.AppendFormat("-b:v {0}k ", FFmpeg.QSV_bitrate);
                             break;
+                        case FFmpegVideoCodec.libwebp: // https://www.ffmpeg.org/ffmpeg-codecs.html#libwebp
+                            args.AppendFormat("-lossless {0} ", "0");
+                            args.AppendFormat("-preset {0} ", "default");
+                            args.AppendFormat("-loop {0} ", "0");
+                            break;
+                        case FFmpegVideoCodec.apng:
+                            args.Append("-f apng ");
+                            args.AppendFormat("-plays {0} ", "0");
+                            break;
                     }
                 }
             }
@@ -228,7 +233,10 @@ namespace ShareX.ScreenCaptureLib
                 switch (FFmpeg.AudioCodec)
                 {
                     case FFmpegAudioCodec.libvoaacenc: // http://trac.ffmpeg.org/wiki/Encode/AAC
-                        args.AppendFormat("-c:a aac -strict -2 -ac 2 -b:a {0}k ", FFmpeg.AAC_bitrate); // -ac 2 required otherwise failing with 7.1
+                        args.AppendFormat("-c:a aac -ac 2 -b:a {0}k ", FFmpeg.AAC_bitrate); // -ac 2 required otherwise failing with 7.1
+                        break;
+                    case FFmpegAudioCodec.libopus: // https://www.ffmpeg.org/ffmpeg-codecs.html#libopus-1
+                        args.AppendFormat("-c:a libopus -b:a {0}k ", FFmpeg.Opus_bitrate);
                         break;
                     case FFmpegAudioCodec.libvorbis: // http://trac.ffmpeg.org/wiki/TheoraVorbisEncodingGuide
                         args.AppendFormat("-c:a libvorbis -qscale:a {0} ", FFmpeg.Vorbis_qscale);
@@ -243,6 +251,8 @@ namespace ShareX.ScreenCaptureLib
             {
                 args.AppendFormat("-t {0} ", isCustom ? "$duration$" : Duration.ToString("0.0", CultureInfo.InvariantCulture)); // duration limit
             }
+
+            args.Append("-y "); // overwrite file
 
             string output;
 

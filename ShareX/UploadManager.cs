@@ -196,7 +196,7 @@ namespace ShareX
 
         private static void ProcessFilesUpload(string[] files, TaskSettings taskSettings)
         {
-            if (files.Length > 0)
+            if (files != null && files.Length > 0)
             {
                 UploadFile(files, taskSettings);
             }
@@ -214,13 +214,13 @@ namespace ShareX
             }
             else if (Clipboard.ContainsText())
             {
-                string text = Clipboard.GetText();
+                string text = ClipboardHelpers.GetText();
 
                 ProcessTextUpload(text, taskSettings);
             }
             else if (Clipboard.ContainsFileDropList())
             {
-                string[] files = Clipboard.GetFileDropList().OfType<string>().ToArray();
+                string[] files = ClipboardHelpers.GetFileDropList();
 
                 ProcessFilesUpload(files, taskSettings);
             }
@@ -345,14 +345,11 @@ namespace ShareX
 
             string inputText = null;
 
-            if (Clipboard.ContainsText())
-            {
-                string text = Clipboard.GetText();
+            string text = ClipboardHelpers.GetText(true);
 
-                if (URLHelpers.IsValidURL(text))
-                {
-                    inputText = text;
-                }
+            if (URLHelpers.IsValidURL(text))
+            {
+                inputText = text;
             }
 
             string url = InputBox.GetInputText("ShareX - " + Resources.UploadManager_UploadURL_URL_to_download_from_and_upload, inputText);
@@ -369,17 +366,15 @@ namespace ShareX
 
             string inputText = null;
 
-            if (Clipboard.ContainsText())
-            {
-                string text = Clipboard.GetText();
+            string text = ClipboardHelpers.GetText(true);
 
-                if (URLHelpers.IsValidURL(text))
-                {
-                    inputText = text;
-                }
+            if (URLHelpers.IsValidURL(text))
+            {
+                inputText = text;
             }
 
-            string url = InputBox.GetInputText("ShareX - " + ShareX.Properties.Resources.UploadManager_ShowShortenURLDialog_ShortenURL, inputText, ShareX.Properties.Resources.UploadManager_ShowShortenURLDialog_Shorten);
+            string url = InputBox.GetInputText("ShareX - " + Resources.UploadManager_ShowShortenURLDialog_ShortenURL, inputText,
+                Resources.UploadManager_ShowShortenURLDialog_Shorten);
 
             if (!string.IsNullOrEmpty(url))
             {

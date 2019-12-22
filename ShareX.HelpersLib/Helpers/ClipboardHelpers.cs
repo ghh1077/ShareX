@@ -36,7 +36,8 @@ namespace ShareX.HelpersLib
 {
     public static class ClipboardHelpers
     {
-        private const int RetryTimes = 20, RetryDelay = 100;
+        private const int RetryTimes = 20;
+        private const int RetryDelay = 100;
         private const string FORMAT_PNG = "PNG";
         private const string FORMAT_17 = "Format17";
 
@@ -196,24 +197,6 @@ namespace ShareX.HelpersLib
             return false;
         }
 
-        public static bool CopyTextFromFile(string path)
-        {
-            if (!string.IsNullOrEmpty(path) && File.Exists(path))
-            {
-                try
-                {
-                    string text = File.ReadAllText(path, Encoding.UTF8);
-                    return CopyText(text);
-                }
-                catch (Exception e)
-                {
-                    DebugHelper.WriteException(e, "Clipboard copy text from file failed.");
-                }
-            }
-
-            return false;
-        }
-
         public static bool CopyImageFromFile(string path)
         {
             if (!string.IsNullOrEmpty(path) && File.Exists(path))
@@ -234,13 +217,34 @@ namespace ShareX.HelpersLib
             return false;
         }
 
-        public static Image GetImage()
+        public static bool CopyTextFromFile(string path)
+        {
+            if (!string.IsNullOrEmpty(path) && File.Exists(path))
+            {
+                try
+                {
+                    string text = File.ReadAllText(path, Encoding.UTF8);
+                    return CopyText(text);
+                }
+                catch (Exception e)
+                {
+                    DebugHelper.WriteException(e, "Clipboard copy text from file failed.");
+                }
+            }
+
+            return false;
+        }
+
+        public static Image GetImage(bool checkContainsImage = false)
         {
             try
             {
                 lock (ClipboardLock)
                 {
-                    return Clipboard.GetImage();
+                    if (!checkContainsImage || Clipboard.ContainsImage())
+                    {
+                        return Clipboard.GetImage();
+                    }
                 }
             }
             catch (Exception e)
@@ -284,12 +288,7 @@ namespace ShareX.HelpersLib
                                 {
                                     try
                                     {
-                                        Image img = GetDIBImage(ms);
-
-                                        if (img != null)
-                                        {
-                                            return img;
-                                        }
+                                        return GetDIBImage(ms);
                                     }
                                     catch (Exception e)
                                     {
@@ -342,6 +341,46 @@ namespace ShareX.HelpersLib
                     GCHandle.FromIntPtr(gcHandle).Free();
                 }
             }
+        }
+
+        public static string GetText(bool checkContainsText = false)
+        {
+            try
+            {
+                lock (ClipboardLock)
+                {
+                    if (!checkContainsText || Clipboard.ContainsText())
+                    {
+                        return Clipboard.GetText();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                DebugHelper.WriteException(e, "Clipboard get text failed.");
+            }
+
+            return null;
+        }
+
+        public static string[] GetFileDropList(bool checkContainsFileDropList = false)
+        {
+            try
+            {
+                lock (ClipboardLock)
+                {
+                    if (!checkContainsFileDropList || Clipboard.ContainsFileDropList())
+                    {
+                        return Clipboard.GetFileDropList().Cast<string>().ToArray();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                DebugHelper.WriteException(e, "Clipboard get file drop list failed.");
+            }
+
+            return null;
         }
     }
 }

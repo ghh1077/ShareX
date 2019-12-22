@@ -43,9 +43,6 @@ namespace ShareX.ImageEffectsLib
         [DefaultValue(typeof(Point), "5, 5")]
         public Point Offset { get; set; }
 
-        [DefaultValue(false)]
-        public bool RandomPosition { get; set; }
-
         [DefaultValue(DrawImageSizeMode.DontResize), Description("How the image watermark should be rescaled, if at all.")]
         public DrawImageSizeMode SizeMode { get; set; }
 
@@ -66,58 +63,41 @@ namespace ShareX.ImageEffectsLib
             {
                 using (Image img2 = ImageHelpers.LoadImage(ImageLocation))
                 {
-                    // Calculate size first
-                    Size imageSize = img2.Size;
-                    if (SizeMode == DrawImageSizeMode.AbsoluteSize)
+                    if (img2 != null)
                     {
-                        // Use Size property
-                        imageSize = Size;
-                    }
-                    else if (SizeMode == DrawImageSizeMode.PercentageOfWatermark)
-                    {
-                        // Relative size (percentage of watermark)
-                        imageSize = new Size((int)(img2.Width * (Size.Width / 100.0)), (int)(img2.Height * (Size.Height / 100.0)));
-                    }
-                    else if (SizeMode == DrawImageSizeMode.PercentageOfCanvas)
-                    {
-                        // Relative size (percentage of image)
-                        imageSize = new Size((int)(img.Width * (Size.Width / 100.0)), (int)(img.Height * (Size.Height / 100.0)));
-                    }
-
-                    // Place the image
-                    Point imagePosition;
-                    if (RandomPosition)
-                    {
-                        int x = 0;
-                        if (img.Width - imageSize.Width > 0)
+                        // Calculate size first
+                        Size imageSize = img2.Size;
+                        if (SizeMode == DrawImageSizeMode.AbsoluteSize)
                         {
-                            x = MathHelpers.Random(0, img.Width - imageSize.Width);
+                            // Use Size property
+                            imageSize = Size;
+                        }
+                        else if (SizeMode == DrawImageSizeMode.PercentageOfWatermark)
+                        {
+                            // Relative size (percentage of watermark)
+                            imageSize = new Size((int)(img2.Width * (Size.Width / 100.0)), (int)(img2.Height * (Size.Height / 100.0)));
+                        }
+                        else if (SizeMode == DrawImageSizeMode.PercentageOfCanvas)
+                        {
+                            // Relative size (percentage of image)
+                            imageSize = new Size((int)(img.Width * (Size.Width / 100.0)), (int)(img.Height * (Size.Height / 100.0)));
                         }
 
-                        int y = 0;
-                        if (img.Height - imageSize.Height > 0)
+                        // Place the image
+                        Point imagePosition = Helpers.GetPosition(Placement, Offset, img.Size, imageSize);
+
+                        Rectangle imageRectangle = new Rectangle(imagePosition, imageSize);
+
+                        if (AutoHide && !new Rectangle(0, 0, img.Width, img.Height).Contains(imageRectangle))
                         {
-                            y = MathHelpers.Random(0, img.Height - imageSize.Height);
+                            return img;
                         }
 
-                        imagePosition = new Point(x, y);
-                    }
-                    else
-                    {
-                        imagePosition = Helpers.GetPosition(Placement, Offset, img.Size, imageSize);
-                    }
-
-                    Rectangle imageRectangle = new Rectangle(imagePosition, imageSize);
-
-                    if (AutoHide && !new Rectangle(0, 0, img.Width, img.Height).Contains(imageRectangle))
-                    {
-                        return img;
-                    }
-
-                    using (Graphics g = Graphics.FromImage(img))
-                    {
-                        g.SetHighQuality();
-                        g.DrawImage(img2, imageRectangle);
+                        using (Graphics g = Graphics.FromImage(img))
+                        {
+                            g.SetHighQuality();
+                            g.DrawImage(img2, imageRectangle);
+                        }
                     }
                 }
             }

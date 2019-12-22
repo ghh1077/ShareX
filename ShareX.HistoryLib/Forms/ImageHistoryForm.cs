@@ -48,17 +48,27 @@ namespace ShareX.HistoryLib
         public ImageHistoryForm(string historyPath, ImageHistorySettings settings, Action<string> uploadFile = null, Action<string> editImage = null)
         {
             InitializeComponent();
-            Icon = ShareXResources.Icon;
+            tsMain.Renderer = new ToolStripRoundedEdgeRenderer();
 
             HistoryPath = historyPath;
             Settings = settings;
 
-            tsMain.Renderer = new CustomToolStripProfessionalRenderer();
             ilvImages.View = (View)Settings.ViewMode;
             ilvImages.ThumbnailSize = Settings.ThumbnailSize;
 
+            if (ShareXResources.ExperimentalDarkTheme)
+            {
+                ilvImages.BorderStyle = BorderStyle.None;
+                ilvImages.Colors.BackColor = ShareXResources.Theme.LightBackgroundColor;
+                ilvImages.Colors.BorderColor = ShareXResources.Theme.BorderColor;
+                ilvImages.Colors.ForeColor = ShareXResources.Theme.TextColor;
+                ilvImages.Colors.SelectedForeColor = ShareXResources.Theme.TextColor;
+                ilvImages.Colors.UnFocusedForeColor = ShareXResources.Theme.TextColor;
+            }
+
             him = new HistoryItemManager(uploadFile, editImage);
             him.GetHistoryItems += him_GetHistoryItems;
+            ilvImages.ContextMenuStrip = him.cmsHistory;
 
             defaultTitle = Text;
 
@@ -66,6 +76,8 @@ namespace ShareX.HistoryLib
             {
                 tstbSearch.Text = Settings.SearchText;
             }
+
+            ShareXResources.ApplyTheme(this);
 
             Settings.WindowState.AutoHandleFormState(this);
         }
@@ -79,7 +91,7 @@ namespace ShareX.HistoryLib
         {
             UpdateSearchText();
             ilvImages.Items.Clear();
-            ImageListViewItem[] ilvItems = GetHistoryItems().Select(hi => new ImageListViewItem(hi.Filepath) { Tag = hi }).ToArray();
+            ImageListViewItem[] ilvItems = GetHistoryItems().Select(hi => new ImageListViewItem(hi.FilePath) { Tag = hi }).ToArray();
             ilvImages.Items.AddRange(ilvItems);
         }
 
@@ -101,7 +113,7 @@ namespace ShareX.HistoryLib
         {
             if (history == null)
             {
-                history = new HistoryManager(HistoryPath);
+                history = new HistoryManagerJSON(HistoryPath);
             }
 
             List<HistoryItem> historyItems = history.GetHistoryItems();
@@ -119,9 +131,9 @@ namespace ShareX.HistoryLib
             {
                 HistoryItem hi = historyItems[i];
 
-                if (!string.IsNullOrEmpty(hi.Filepath) && Helpers.IsImageFile(hi.Filepath) &&
-                    (regex == null || regex.IsMatch(hi.Filename)) &&
-                    (!Settings.FilterMissingFiles || File.Exists(hi.Filepath)))
+                if (!string.IsNullOrEmpty(hi.FilePath) && Helpers.IsImageFile(hi.FilePath) &&
+                    (regex == null || regex.IsMatch(hi.FileName)) &&
+                    (!Settings.FilterMissingFiles || File.Exists(hi.FilePath)))
                 {
                     filteredHistoryItems.Add(hi);
 
@@ -161,17 +173,9 @@ namespace ShareX.HistoryLib
             }
         }
 
-        private void ilvImages_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                him.cmsHistory.Show(ilvImages, e.X + 1, e.Y + 1);
-            }
-        }
-
         private void ilvImages_SelectionChanged(object sender, EventArgs e)
         {
-            him.RefreshInfo();
+            him.UpdateSelectedHistoryItem();
         }
 
         private void ilvImages_ItemDoubleClick(object sender, ItemClickEventArgs e)

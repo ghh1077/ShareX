@@ -32,7 +32,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.FileUploaders
@@ -264,7 +263,7 @@ namespace ShareX.UploadersLib.FileUploaders
         {
             if (!string.IsNullOrEmpty(Settings.Endpoint) && !string.IsNullOrEmpty(Settings.Bucket))
             {
-                uploadPath = URLHelpers.URLEncode(uploadPath, true);
+                uploadPath = URLHelpers.URLEncode(uploadPath, true, HelpersOptions.URLEncodeIgnoreEmoji);
 
                 string url;
 

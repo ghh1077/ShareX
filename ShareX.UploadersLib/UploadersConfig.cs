@@ -56,15 +56,6 @@ namespace ShareX.UploadersLib
 
         #endregion ImageShack
 
-        #region TinyPic
-
-        public AccountType TinyPicAccountType = AccountType.Anonymous;
-        public string TinyPicRegistrationCode = "";
-        public string TinyPicUsername = "";
-        public string TinyPicPassword = "";
-
-        #endregion TinyPic
-
         #region Flickr
 
         public OAuthInfo FlickrOAuthInfo = null;
@@ -400,9 +391,9 @@ namespace ShareX.UploadersLib
         public string B2ApplicationKeyId = "";
         public string B2ApplicationKey = "";
         public string B2BucketName = "";
-        public string B2UploadPath = "ShareX/%y/%mo/";
+        public string B2UploadPath = "ShareX/%y/%mo";
         public bool B2UseCustomUrl = false;
-        public string B2CustomUrl = "https://example.com/";
+        public string B2CustomUrl = "https://example.com";
 
         #endregion Backblaze B2
 

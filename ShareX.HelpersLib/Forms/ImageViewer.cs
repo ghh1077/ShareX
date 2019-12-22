@@ -37,8 +37,9 @@ namespace ShareX.HelpersLib
         private ImageViewer(Image image)
         {
             screenshot = image;
+
             InitializeComponent();
-            Icon = ShareXResources.Icon;
+            ShareXResources.ApplyTheme(this);
         }
 
         public static void ShowImage(Image img)
@@ -53,14 +54,16 @@ namespace ShareX.HelpersLib
             }
         }
 
-        public static void ShowImage(string filepath)
+        public static void ShowImage(string filePath)
         {
-            if (!string.IsNullOrEmpty(filepath) && File.Exists(filepath))
+            using (Image img = ImageHelpers.LoadImage(filePath))
             {
-                using (Image img = ImageHelpers.LoadImage(filepath))
-                using (ImageViewer viewer = new ImageViewer(img))
+                if (img != null)
                 {
-                    viewer.ShowDialog();
+                    using (ImageViewer viewer = new ImageViewer(img))
+                    {
+                        viewer.ShowDialog();
+                    }
                 }
             }
         }
@@ -138,6 +141,7 @@ namespace ShareX.HelpersLib
             pbPreview.FullscreenOnClick = false;
             pbPreview.Location = new System.Drawing.Point(0, 0);
             pbPreview.Name = "pbPreview";
+            pbPreview.ShowImageSizeLabel = true;
             pbPreview.Size = new System.Drawing.Size(96, 100);
             pbPreview.TabIndex = 0;
             pbPreview.LoadImage(screenshot);

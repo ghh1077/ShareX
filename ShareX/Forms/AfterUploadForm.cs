@@ -46,7 +46,7 @@ namespace ShareX
         public AfterUploadForm(TaskInfo info)
         {
             InitializeComponent();
-            Icon = ShareXResources.Icon;
+            ShareXResources.ApplyTheme(this);
 
             Info = info;
             if (Info.TaskSettings.AdvancedSettings.AutoCloseAfterUploadForm) tmrClose.Start();
@@ -152,7 +152,7 @@ namespace ShareX
                 {
                     url = lvClipboardFormats.Items[0].SubItems[1].Text;
                 }
-                else if (lvClipboardFormats.SelectedItems.Count > 0)
+                else
                 {
                     url = lvClipboardFormats.SelectedItems[0].SubItems[1].Text;
                 }

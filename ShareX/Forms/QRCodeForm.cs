@@ -29,7 +29,6 @@ using ShareX.ScreenCaptureLib;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -46,7 +45,7 @@ namespace ShareX
         public QRCodeForm(string text = null)
         {
             InitializeComponent();
-            Icon = ShareXResources.Icon;
+            ShareXResources.ApplyTheme(this);
 
             if (!string.IsNullOrEmpty(text))
             {
@@ -56,14 +55,11 @@ namespace ShareX
 
         public static QRCodeForm EncodeClipboard()
         {
-            if (Clipboard.ContainsText())
-            {
-                string text = Clipboard.GetText();
+            string text = ClipboardHelpers.GetText(true);
 
-                if (TaskHelpers.CheckQRCodeContent(text))
-                {
-                    return new QRCodeForm(text);
-                }
+            if (!string.IsNullOrEmpty(text) && TaskHelpers.CheckQRCodeContent(text))
+            {
+                return new QRCodeForm(text);
             }
 
             return new QRCodeForm();
@@ -104,6 +100,7 @@ namespace ShareX
 
                 int size = Math.Min(pbQRCode.Width, pbQRCode.Height);
                 pbQRCode.Image = TaskHelpers.CreateQRCode(text, size);
+                pbQRCode.BackColor = Color.White;
             }
         }
 
@@ -219,7 +216,9 @@ namespace ShareX
                 Hide();
                 Thread.Sleep(250);
 
-                using (Image img = RegionCaptureTasks.GetRegionImage(null))
+                TaskSettings taskSettings = TaskSettings.GetDefaultTaskSettings();
+
+                using (Image img = RegionCaptureTasks.GetRegionImage(taskSettings.CaptureSettings.SurfaceOptions))
                 {
                     if (img != null)
                     {

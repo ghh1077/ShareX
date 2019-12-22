@@ -65,6 +65,11 @@ namespace ShareX.HelpersLib
                 ShowImageMargin = false
             };
 
+            if (ShareXResources.ExperimentalDarkTheme)
+            {
+                cms.Renderer = new ToolStripDarkRenderer();
+            }
+
             foreach (CodeMenuItem item in items)
             {
                 ToolStripMenuItem tsmi = new ToolStripMenuItem { Text = $"{item.Name} - {item.Description}", Tag = item.Name };

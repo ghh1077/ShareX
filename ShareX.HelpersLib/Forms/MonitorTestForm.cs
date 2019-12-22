@@ -35,7 +35,7 @@ namespace ShareX.HelpersLib
         public MonitorTestForm()
         {
             InitializeComponent();
-            Icon = ShareXResources.Icon;
+            ShareXResources.ApplyTheme(this);
 
             Rectangle screenBounds = CaptureHelpers.GetScreenBounds();
             Location = screenBounds.Location;

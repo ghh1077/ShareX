@@ -41,7 +41,7 @@ namespace ShareX
         public ActionsForm(ExternalProgram fileAction)
         {
             InitializeComponent();
-            Icon = ShareXResources.Icon;
+            ShareXResources.ApplyTheme(this);
 
             FileAction = fileAction;
             txtName.Text = fileAction.Name ?? "";
@@ -56,7 +56,7 @@ namespace ShareX
 
         private void btnPathBrowse_Click(object sender, EventArgs e)
         {
-            Helpers.BrowseFile(txtPath);
+            Helpers.BrowseFile(txtPath, "", true);
         }
 
         private void txtOutputExtension_TextChanged(object sender, EventArgs e)

@@ -2159,6 +2159,16 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap LoadingSmall {
+            get {
+                object obj = ResourceManager.GetObject("LoadingSmall", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string MyMessageBox_MyMessageBox_Cancel {
@@ -2209,6 +2219,42 @@ namespace ShareX.HelpersLib.Properties {
         internal static string MyPictureBox_pbMain_LoadProgressChanged_Loading_image___0__ {
             get {
                 return ResourceManager.GetString("MyPictureBox_pbMain_LoadProgressChanged_Loading_image___0__", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy name.
+        /// </summary>
+        internal static string ObjectListView_ObjectListView_Copy_name {
+            get {
+                return ResourceManager.GetString("ObjectListView_ObjectListView_Copy_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy value.
+        /// </summary>
+        internal static string ObjectListView_ObjectListView_Copy_value {
+            get {
+                return ResourceManager.GetString("ObjectListView_ObjectListView_Copy_value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string ObjectListView_ObjectListView_Name {
+            get {
+                return ResourceManager.GetString("ObjectListView_ObjectListView_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value.
+        /// </summary>
+        internal static string ObjectListView_ObjectListView_Value {
+            get {
+                return ResourceManager.GetString("ObjectListView_ObjectListView_Value", resourceCulture);
             }
         }
         
@@ -2421,6 +2467,24 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Random emoji. Repeat using {n}.
+        /// </summary>
+        internal static string RandomEmojiRepeatUsingN {
+            get {
+                return ResourceManager.GetString("RandomEmojiRepeatUsingN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Random non ambiguous alphanumeric char. Repeat using {n}.
+        /// </summary>
+        internal static string RandomNonAmbiguousAlphanumericCharRepeatUsingN {
+            get {
+                return ResourceManager.GetString("RandomNonAmbiguousAlphanumericCharRepeatUsingN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel capture.
         /// </summary>
         internal static string RegionCaptureAction_CancelCapture {
@@ -2547,7 +2611,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current day.
+        ///   Looks up a localized string similar to Day.
         /// </summary>
         internal static string ReplCodeMenuEntry_d_Current_day {
             get {
@@ -2565,7 +2629,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current hour.
+        ///   Looks up a localized string similar to Hour.
         /// </summary>
         internal static string ReplCodeMenuEntry_h_Current_hour {
             get {
@@ -2628,7 +2692,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current minute.
+        ///   Looks up a localized string similar to Minute.
         /// </summary>
         internal static string ReplCodeMenuEntry_mi_Current_minute {
             get {
@@ -2637,7 +2701,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current month.
+        ///   Looks up a localized string similar to Month.
         /// </summary>
         internal static string ReplCodeMenuEntry_mo_Current_month {
             get {
@@ -2646,7 +2710,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current month name (Local language).
+        ///   Looks up a localized string similar to Month name (Local language).
         /// </summary>
         internal static string ReplCodeMenuEntry_mon_Current_month_name__Local_language_ {
             get {
@@ -2655,7 +2719,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current month name (English).
+        ///   Looks up a localized string similar to Month name (English).
         /// </summary>
         internal static string ReplCodeMenuEntry_mon2_Current_month_name__English_ {
             get {
@@ -2664,7 +2728,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current millisecond.
+        ///   Looks up a localized string similar to Millisecond.
         /// </summary>
         internal static string ReplCodeMenuEntry_ms_Current_millisecond {
             get {
@@ -2682,7 +2746,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gets AM/PM.
+        ///   Looks up a localized string similar to AM/PM.
         /// </summary>
         internal static string ReplCodeMenuEntry_pm_Gets_AM_PM {
             get {
@@ -2736,7 +2800,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current second.
+        ///   Looks up a localized string similar to Second.
         /// </summary>
         internal static string ReplCodeMenuEntry_s_Current_second {
             get {
@@ -2781,7 +2845,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current week name (Local language).
+        ///   Looks up a localized string similar to Week name (Local language).
         /// </summary>
         internal static string ReplCodeMenuEntry_w_Current_week_name__Local_language_ {
             get {
@@ -2790,7 +2854,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current week name (English).
+        ///   Looks up a localized string similar to Week name (English).
         /// </summary>
         internal static string ReplCodeMenuEntry_w2_Current_week_name__English_ {
             get {
@@ -2808,7 +2872,16 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current year.
+        ///   Looks up a localized string similar to Week of year.
+        /// </summary>
+        internal static string ReplCodeMenuEntry_wy_Week_of_year {
+            get {
+                return ResourceManager.GetString("ReplCodeMenuEntry_wy_Week_of_year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year.
         /// </summary>
         internal static string ReplCodeMenuEntry_y_Current_year {
             get {
@@ -2817,7 +2890,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current year (2 digits).
+        ///   Looks up a localized string similar to Year (2 digits).
         /// </summary>
         internal static string ReplCodeMenuEntry_yy_Current_year__2_digits_ {
             get {
@@ -2961,7 +3034,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawing: Arrow (A).
+        ///   Looks up a localized string similar to Arrow (A).
         /// </summary>
         internal static string ShapeType_DrawingArrow {
             get {
@@ -2970,7 +3043,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawing: Cursor.
+        ///   Looks up a localized string similar to Cursor.
         /// </summary>
         internal static string ShapeType_DrawingCursor {
             get {
@@ -2979,7 +3052,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawing: Ellipse (E).
+        ///   Looks up a localized string similar to Ellipse (E).
         /// </summary>
         internal static string ShapeType_DrawingEllipse {
             get {
@@ -2988,7 +3061,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawing: Freehand (F).
+        ///   Looks up a localized string similar to Freehand (F).
         /// </summary>
         internal static string ShapeType_DrawingFreehand {
             get {
@@ -2997,7 +3070,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawing: Image (File).
+        ///   Looks up a localized string similar to Image (File).
         /// </summary>
         internal static string ShapeType_DrawingImage {
             get {
@@ -3006,7 +3079,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawing: Image (Screen).
+        ///   Looks up a localized string similar to Image (Screen).
         /// </summary>
         internal static string ShapeType_DrawingImageScreen {
             get {
@@ -3015,7 +3088,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawing: Line (L).
+        ///   Looks up a localized string similar to Line (L).
         /// </summary>
         internal static string ShapeType_DrawingLine {
             get {
@@ -3024,7 +3097,16 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawing: Rectangle (R).
+        ///   Looks up a localized string similar to Magnify.
+        /// </summary>
+        internal static string ShapeType_DrawingMagnify {
+            get {
+                return ResourceManager.GetString("ShapeType_DrawingMagnify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rectangle (R).
         /// </summary>
         internal static string ShapeType_DrawingRectangle {
             get {
@@ -3033,7 +3115,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawing: Speech balloon (S).
+        ///   Looks up a localized string similar to Speech balloon (S).
         /// </summary>
         internal static string ShapeType_DrawingSpeechBalloon {
             get {
@@ -3042,7 +3124,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawing: Step (I).
+        ///   Looks up a localized string similar to Step (I).
         /// </summary>
         internal static string ShapeType_DrawingStep {
             get {
@@ -3051,7 +3133,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawing: Sticker.
+        ///   Looks up a localized string similar to Sticker.
         /// </summary>
         internal static string ShapeType_DrawingSticker {
             get {
@@ -3060,7 +3142,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawing: Text (Background) (T).
+        ///   Looks up a localized string similar to Text (Background) (T).
         /// </summary>
         internal static string ShapeType_DrawingTextBackground {
             get {
@@ -3069,7 +3151,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawing: Text (Outline) (O).
+        ///   Looks up a localized string similar to Text (Outline) (O).
         /// </summary>
         internal static string ShapeType_DrawingTextOutline {
             get {
@@ -3078,7 +3160,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Effect: Blur (B).
+        ///   Looks up a localized string similar to Blur (B).
         /// </summary>
         internal static string ShapeType_EffectBlur {
             get {
@@ -3087,7 +3169,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Effect: Highlight (H).
+        ///   Looks up a localized string similar to Highlight (H).
         /// </summary>
         internal static string ShapeType_EffectHighlight {
             get {
@@ -3096,7 +3178,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Effect: Pixelate (P).
+        ///   Looks up a localized string similar to Pixelate (P).
         /// </summary>
         internal static string ShapeType_EffectPixelate {
             get {
@@ -3105,7 +3187,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Region: Ellipse.
+        ///   Looks up a localized string similar to Ellipse region.
         /// </summary>
         internal static string ShapeType_RegionEllipse {
             get {
@@ -3114,7 +3196,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Region: Freehand.
+        ///   Looks up a localized string similar to Freehand region.
         /// </summary>
         internal static string ShapeType_RegionFreehand {
             get {
@@ -3123,7 +3205,7 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Region: Rectangle.
+        ///   Looks up a localized string similar to Rectangle region.
         /// </summary>
         internal static string ShapeType_RegionRectangle {
             get {
@@ -3175,16 +3257,6 @@ namespace ShareX.HelpersLib.Properties {
         internal static System.Drawing.Bitmap ShareX_Logo {
             get {
                 object obj = ResourceManager.GetObject("ShareX_Logo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ShareX_Logo_Black {
-            get {
-                object obj = ResourceManager.GetObject("ShareX_Logo_Black", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

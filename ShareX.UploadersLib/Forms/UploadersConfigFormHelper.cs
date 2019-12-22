@@ -294,27 +294,21 @@ namespace ShareX.UploadersLib
         private void B2UpdateCustomDomainPreview()
         {
             string uploadPath = NameParser.Parse(NameParserType.FolderPath, Config.B2UploadPath);
+            string url;
 
             if (cbB2CustomUrl.Checked)
             {
                 string customUrl = NameParser.Parse(NameParserType.FolderPath, Config.B2CustomUrl);
-                if (URLHelpers.IsValidURL(customUrl))
-                {
-                    txtB2UrlPreview.Text = customUrl + uploadPath + "example.png";
-                }
-                else
-                {
-                    txtB2UrlPreview.Text = "invalid custom URL";
-                }
+                url = URLHelpers.CombineURL(customUrl, uploadPath, "example.png");
+                url = URLHelpers.FixPrefix(url, "https://");
             }
             else
             {
-                string bucket = string.IsNullOrEmpty(Config.B2BucketName) ?
-                    "[bucket]" :
-                    URLHelpers.URLEncode(Config.B2BucketName);
-                string url = $"https://f001.backblazeb2.com/file/{bucket}/{uploadPath}example.png";
-                txtB2UrlPreview.Text = url;
+                string bucket = string.IsNullOrEmpty(Config.B2BucketName) ? "[bucket]" : URLHelpers.URLEncode(Config.B2BucketName);
+                url = URLHelpers.CombineURL("https://f001.backblazeb2.com/file", bucket, uploadPath, "example.png");
             }
+
+            lblB2UrlPreview.Text = url;
         }
 
         #endregion Backblaze B2
@@ -470,10 +464,10 @@ namespace ShareX.UploadersLib
                     cbFTPFile.Items.Add(account);
                 }
 
-                cbFTPAccounts.SelectedIndex = selected.Between(0, Config.FTPAccountList.Count - 1);
-                cbFTPImage.SelectedIndex = Config.FTPSelectedImage.Between(0, Config.FTPAccountList.Count - 1);
-                cbFTPText.SelectedIndex = Config.FTPSelectedText.Between(0, Config.FTPAccountList.Count - 1);
-                cbFTPFile.SelectedIndex = Config.FTPSelectedFile.Between(0, Config.FTPAccountList.Count - 1);
+                cbFTPAccounts.SelectedIndex = selected.Clamp(0, Config.FTPAccountList.Count - 1);
+                cbFTPImage.SelectedIndex = Config.FTPSelectedImage.Clamp(0, Config.FTPAccountList.Count - 1);
+                cbFTPText.SelectedIndex = Config.FTPSelectedText.Clamp(0, Config.FTPAccountList.Count - 1);
+                cbFTPFile.SelectedIndex = Config.FTPSelectedFile.Clamp(0, Config.FTPAccountList.Count - 1);
             }
 
             FTPUpdateEnabledStates();
@@ -977,10 +971,10 @@ namespace ShareX.UploadersLib
                     cboSharedFolderFiles.Items.Add(account);
                 }
 
-                lbSharedFolderAccounts.SelectedIndex = selected.Between(0, Config.LocalhostAccountList.Count - 1);
-                cboSharedFolderImages.SelectedIndex = Config.LocalhostSelectedImages.Between(0, Config.LocalhostAccountList.Count - 1);
-                cboSharedFolderText.SelectedIndex = Config.LocalhostSelectedText.Between(0, Config.LocalhostAccountList.Count - 1);
-                cboSharedFolderFiles.SelectedIndex = Config.LocalhostSelectedFiles.Between(0, Config.LocalhostAccountList.Count - 1);
+                lbSharedFolderAccounts.SelectedIndex = selected.Clamp(0, Config.LocalhostAccountList.Count - 1);
+                cboSharedFolderImages.SelectedIndex = Config.LocalhostSelectedImages.Clamp(0, Config.LocalhostAccountList.Count - 1);
+                cboSharedFolderText.SelectedIndex = Config.LocalhostSelectedText.Clamp(0, Config.LocalhostAccountList.Count - 1);
+                cboSharedFolderFiles.SelectedIndex = Config.LocalhostSelectedFiles.Clamp(0, Config.LocalhostAccountList.Count - 1);
             }
 
             SharedFolderUpdateEnabledStates();

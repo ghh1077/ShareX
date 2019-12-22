@@ -41,7 +41,7 @@ namespace ShareX
         public FileExistForm(string filepath)
         {
             InitializeComponent();
-            Icon = ShareXResources.Icon;
+            ShareXResources.ApplyTheme(this);
 
             Filepath = filepath;
             filename = Path.GetFileNameWithoutExtension(Filepath);

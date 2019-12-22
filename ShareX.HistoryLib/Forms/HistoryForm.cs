@@ -44,6 +44,7 @@ namespace ShareX.HistoryLib
         private HistoryItemManager him;
         private HistoryItem[] allHistoryItems;
         private string defaultTitle;
+        private bool showingStats;
 
         public HistoryForm(string historyPath, HistorySettings settings, Action<string> uploadFile = null, Action<string> editImage = null)
         {
@@ -51,7 +52,7 @@ namespace ShareX.HistoryLib
             Settings = settings;
 
             InitializeComponent();
-            Icon = ShareXResources.Icon;
+
             defaultTitle = Text;
             UpdateTitle();
 
@@ -68,6 +69,7 @@ namespace ShareX.HistoryLib
 
             him = new HistoryItemManager(uploadFile, editImage);
             him.GetHistoryItems += him_GetHistoryItems;
+            lvHistory.ContextMenuStrip = him.cmsHistory;
 
             pbThumbnail.Reset();
             lvHistory.FillLastColumn();
@@ -77,6 +79,8 @@ namespace ShareX.HistoryLib
                 scMain.SplitterDistance = Settings.SplitterDistance;
             }
 
+            ShareXResources.ApplyTheme(this);
+
             Settings.WindowState.AutoHandleFormState(this);
         }
 
@@ -84,6 +88,61 @@ namespace ShareX.HistoryLib
         {
             allHistoryItems = GetHistoryItems();
             ApplyFiltersAndAdd();
+        }
+
+        private void OutputStats(HistoryItem[] historyItems)
+        {
+            rtbStats.ResetText();
+
+            rtbStats.SetFontBold();
+            rtbStats.AppendLine(Resources.HistoryItemCounts);
+            rtbStats.SetFontRegular();
+            rtbStats.AppendLine(Resources.HistoryStats_Total + " " + historyItems.Length);
+
+            IEnumerable<string> types = historyItems.
+                GroupBy(x => x.Type).
+                OrderByDescending(x => x.Count()).
+                Select(x => string.Format("{0}: {1} ({2:N0}%)", x.Key, x.Count(), x.Count() / (float)historyItems.Length * 100));
+
+            rtbStats.AppendLine(string.Join(Environment.NewLine, types));
+
+            rtbStats.AppendLine();
+            rtbStats.SetFontBold();
+            rtbStats.AppendLine(Resources.HistoryStats_YearlyUsages);
+            rtbStats.SetFontRegular();
+
+            IEnumerable<string> yearlyUsages = historyItems.
+                GroupBy(x => x.DateTime.Year).
+                OrderByDescending(x => x.Key).
+                Select(x => string.Format("{0}: {1} ({2:N0}%)", x.Key, x.Count(), x.Count() / (float)historyItems.Length * 100));
+
+            rtbStats.AppendLine(string.Join(Environment.NewLine, yearlyUsages));
+
+            rtbStats.AppendLine();
+            rtbStats.SetFontBold();
+            rtbStats.AppendLine(Resources.HistoryStats_FileExtensions);
+            rtbStats.SetFontRegular();
+
+            IEnumerable<string> fileExtensions = historyItems.
+                Where(x => !string.IsNullOrEmpty(x.FileName) && !x.FileName.EndsWith(")")).
+                Select(x => Helpers.GetFilenameExtension(x.FileName)).
+                GroupBy(x => x).
+                OrderByDescending(x => x.Count()).
+                Select(x => string.Format("{0} ({1})", x.Key, x.Count()));
+
+            rtbStats.AppendLine(string.Join(Environment.NewLine, fileExtensions));
+
+            rtbStats.AppendLine();
+            rtbStats.SetFontBold();
+            rtbStats.AppendLine(Resources.HistoryStats_Hosts);
+            rtbStats.SetFontRegular();
+
+            IEnumerable<string> hosts = historyItems.
+                GroupBy(x => x.Host).
+                OrderByDescending(x => x.Count()).
+                Select(x => string.Format("{0} ({1})", x.Key, x.Count()));
+
+            rtbStats.AppendLine(string.Join(Environment.NewLine, hosts));
         }
 
         private HistoryItem[] him_GetHistoryItems()
@@ -95,7 +154,7 @@ namespace ShareX.HistoryLib
         {
             if (history == null)
             {
-                history = new HistoryManager(HistoryPath);
+                history = new HistoryManagerJSON(HistoryPath);
             }
 
             IEnumerable<HistoryItem> tempHistoryItems = history.GetHistoryItems();
@@ -152,7 +211,7 @@ namespace ShareX.HistoryLib
             {
                 string pattern = Regex.Escape(filenameFilter).Replace("\\?", ".").Replace("\\*", ".*");
                 Regex regex = new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                result = result.Where(x => x.Filename != null && regex.IsMatch(x.Filename));
+                result = result.Where(x => x.FileName != null && regex.IsMatch(x.FileName));
             }
 
             string urlFilter = txtURLFilter.Text;
@@ -206,7 +265,7 @@ namespace ShareX.HistoryLib
                 }
 
                 lvi.SubItems.Add(hi.DateTime.ToString()).Tag = hi.DateTime;
-                lvi.SubItems.Add(hi.Filename);
+                lvi.SubItems.Add(hi.FileName);
                 lvi.SubItems.Add(hi.URL);
                 lvi.Tag = hi;
             }
@@ -234,11 +293,10 @@ namespace ShareX.HistoryLib
                     status.AppendFormat(" - " + Resources.HistoryForm_UpdateItemCount___Filtered___0_, historyItems.Length.ToString("N0"));
                 }
 
-                IEnumerable<string> types = from hi in historyItems
-                                            group hi by hi.Type
-                                            into t
-                                            let count = t.Count()
-                                            select string.Format(" - {0}: {1:N0}", t.Key, count);
+                IEnumerable<string> types = historyItems.
+                    GroupBy(x => x.Type).
+                    OrderByDescending(x => x.Count()).
+                    Select(x => string.Format(" - {0}: {1}", x.Key, x.Count()));
 
                 foreach (string type in types)
                 {
@@ -254,14 +312,16 @@ namespace ShareX.HistoryLib
 
         private void UpdateControls()
         {
-            switch (him.RefreshInfo())
+            HistoryItem previousHistoryItem = him.HistoryItem;
+            HistoryItem historyItem = him.UpdateSelectedHistoryItem();
+
+            if (historyItem == null)
             {
-                case HistoryRefreshInfoResult.Success:
-                    UpdatePictureBox();
-                    break;
-                case HistoryRefreshInfoResult.Invalid:
-                    pbThumbnail.Reset();
-                    break;
+                pbThumbnail.Reset();
+            }
+            else if (historyItem != previousHistoryItem)
+            {
+                UpdatePictureBox();
             }
         }
 
@@ -273,7 +333,7 @@ namespace ShareX.HistoryLib
             {
                 if (him.IsImageFile)
                 {
-                    pbThumbnail.LoadImageFromFileAsync(him.HistoryItem.Filepath);
+                    pbThumbnail.LoadImageFromFileAsync(him.HistoryItem.FilePath);
                 }
                 else if (him.IsImageURL)
                 {
@@ -340,19 +400,32 @@ namespace ShareX.HistoryLib
             AddHistoryItems(allHistoryItems);
         }
 
+        private void BtnShowStats_Click(object sender, EventArgs e)
+        {
+            if (showingStats)
+            {
+                lvHistory.Visible = true;
+                pStats.Visible = false;
+                btnShowStats.Text = Resources.BtnShowStats_ShowStats;
+                showingStats = false;
+            }
+            else
+            {
+                pStats.Visible = true;
+                lvHistory.Visible = false;
+                btnShowStats.Text = Resources.BtnShowStats_HideStats;
+                Cursor = Cursors.WaitCursor;
+                OutputStats(allHistoryItems);
+                Cursor = Cursors.Default;
+                showingStats = true;
+            }
+        }
+
         private void lvHistory_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             if (e.IsSelected)
             {
                 UpdateControls();
-            }
-        }
-
-        private void lvHistory_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                him.cmsHistory.Show(lvHistory, e.X + 1, e.Y + 1);
             }
         }
 
@@ -391,9 +464,9 @@ namespace ShareX.HistoryLib
             foreach (ListViewItem item in lvHistory.SelectedItems)
             {
                 HistoryItem hi = (HistoryItem)item.Tag;
-                if (File.Exists(hi.Filepath))
+                if (File.Exists(hi.FilePath))
                 {
-                    selection.Add(hi.Filepath);
+                    selection.Add(hi.FilePath);
                 }
             }
 

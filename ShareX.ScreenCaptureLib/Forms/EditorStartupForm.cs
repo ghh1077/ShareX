@@ -40,9 +40,10 @@ namespace ShareX.ScreenCaptureLib
 
         public EditorStartupForm(RegionCaptureOptions options)
         {
-            InitializeComponent();
-            Icon = ShareXResources.Icon;
             Options = options;
+
+            InitializeComponent();
+            ShareXResources.ApplyTheme(this);
         }
 
         private void LoadImageFile(string imageFilePath)
@@ -80,11 +81,12 @@ namespace ShareX.ScreenCaptureLib
             }
             else if (Clipboard.ContainsFileDropList())
             {
-                string[] files = Clipboard.GetFileDropList().OfType<string>().Where(x => Helpers.IsImageFile(x)).ToArray();
+                string[] files = ClipboardHelpers.GetFileDropList();
 
-                if (files.Length > 0)
+                if (files != null)
                 {
-                    LoadImageFile(files[0]);
+                    string imageFilePath = files.FirstOrDefault(x => Helpers.IsImageFile(x));
+                    LoadImageFile(imageFilePath);
                 }
             }
             else

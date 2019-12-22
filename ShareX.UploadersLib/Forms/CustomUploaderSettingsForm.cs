@@ -59,7 +59,6 @@ namespace ShareX.UploadersLib
             Config = config;
 
             InitializeComponent();
-            Icon = ShareXResources.Icon;
 
             /*
             CodeMenuItem[] inputCodeMenuItems = new CodeMenuItem[]
@@ -104,6 +103,8 @@ namespace ShareX.UploadersLib
             CustomUploaderAddDestinationTypes();
             cbRequestMethod.Items.AddRange(Enum.GetNames(typeof(HttpMethod)));
             cbBody.Items.AddRange(Helpers.GetEnumDescriptions<CustomUploaderBody>());
+
+            ShareXResources.ApplyTheme(this);
 
             CustomUploaderLoadTab();
         }
@@ -614,11 +615,11 @@ namespace ShareX.UploadersLib
                     cbURLSharingService.Items.Add(item);
                 }
 
-                cbImageUploader.SelectedIndex = Config.CustomImageUploaderSelected.Between(0, Config.CustomUploadersList.Count - 1);
-                cbTextUploader.SelectedIndex = Config.CustomTextUploaderSelected.Between(0, Config.CustomUploadersList.Count - 1);
-                cbFileUploader.SelectedIndex = Config.CustomFileUploaderSelected.Between(0, Config.CustomUploadersList.Count - 1);
-                cbURLShortener.SelectedIndex = Config.CustomURLShortenerSelected.Between(0, Config.CustomUploadersList.Count - 1);
-                cbURLSharingService.SelectedIndex = Config.CustomURLSharingServiceSelected.Between(0, Config.CustomUploadersList.Count - 1);
+                cbImageUploader.SelectedIndex = Config.CustomImageUploaderSelected.Clamp(0, Config.CustomUploadersList.Count - 1);
+                cbTextUploader.SelectedIndex = Config.CustomTextUploaderSelected.Clamp(0, Config.CustomUploadersList.Count - 1);
+                cbFileUploader.SelectedIndex = Config.CustomFileUploaderSelected.Clamp(0, Config.CustomUploadersList.Count - 1);
+                cbURLShortener.SelectedIndex = Config.CustomURLShortenerSelected.Clamp(0, Config.CustomUploadersList.Count - 1);
+                cbURLSharingService.SelectedIndex = Config.CustomURLSharingServiceSelected.Clamp(0, Config.CustomUploadersList.Count - 1);
             }
         }
 
@@ -768,32 +769,32 @@ namespace ShareX.UploadersLib
         {
             rtbResponseInfo.ResetText();
 
-            rtbResponseInfo.SelectionFont = new Font(rtbResponseInfo.Font, FontStyle.Bold);
+            rtbResponseInfo.SetFontBold();
             rtbResponseInfo.AppendText("Status code:\r\n");
-            rtbResponseInfo.SelectionFont = new Font(rtbResponseInfo.Font, FontStyle.Regular);
+            rtbResponseInfo.SetFontRegular();
             rtbResponseInfo.AppendText($"({(int)responseInfo.StatusCode}) {responseInfo.StatusDescription}");
 
             if (!string.IsNullOrEmpty(responseInfo.ResponseURL))
             {
-                rtbResponseInfo.SelectionFont = new Font(rtbResponseInfo.Font, FontStyle.Bold);
+                rtbResponseInfo.SetFontBold();
                 rtbResponseInfo.AppendText("\r\n\r\nResponse URL:\r\n");
-                rtbResponseInfo.SelectionFont = new Font(rtbResponseInfo.Font, FontStyle.Regular);
+                rtbResponseInfo.SetFontRegular();
                 rtbResponseInfo.AppendText(responseInfo.ResponseURL);
             }
 
             if (responseInfo.Headers != null && responseInfo.Headers.Count > 0)
             {
-                rtbResponseInfo.SelectionFont = new Font(rtbResponseInfo.Font, FontStyle.Bold);
+                rtbResponseInfo.SetFontBold();
                 rtbResponseInfo.AppendText("\r\n\r\nHeaders:\r\n");
-                rtbResponseInfo.SelectionFont = new Font(rtbResponseInfo.Font, FontStyle.Regular);
+                rtbResponseInfo.SetFontRegular();
                 rtbResponseInfo.AppendText(responseInfo.Headers.ToString().TrimEnd('\r', '\n'));
             }
 
             if (includeResponseText && !string.IsNullOrEmpty(responseInfo.ResponseText))
             {
-                rtbResponseInfo.SelectionFont = new Font(rtbResponseInfo.Font, FontStyle.Bold);
+                rtbResponseInfo.SetFontBold();
                 rtbResponseInfo.AppendText("\r\n\r\nResponse text:\r\n");
-                rtbResponseInfo.SelectionFont = new Font(rtbResponseInfo.Font, FontStyle.Regular);
+                rtbResponseInfo.SetFontRegular();
                 rtbResponseInfo.AppendText(responseInfo.ResponseText);
             }
         }

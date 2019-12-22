@@ -41,7 +41,12 @@ namespace ShareX.HelpersLib
         public ClipboardContentViewer(bool showCheckBox = false)
         {
             InitializeComponent();
-            Icon = ShareXResources.Icon;
+            ShareXResources.ApplyTheme(this);
+
+            if (ShareXResources.ExperimentalDarkTheme)
+            {
+                lblQuestion.BackColor = ShareXResources.Theme.BorderColor;
+            }
 
             cbDontShowThisWindow.Visible = showCheckBox;
         }
@@ -72,7 +77,7 @@ namespace ShareX.HelpersLib
             }
             else if (Clipboard.ContainsText())
             {
-                string text = Clipboard.GetText();
+                string text = ClipboardHelpers.GetText();
 
                 if (!string.IsNullOrEmpty(text))
                 {
@@ -86,9 +91,9 @@ namespace ShareX.HelpersLib
             }
             else if (Clipboard.ContainsFileDropList())
             {
-                string[] files = Clipboard.GetFileDropList().OfType<string>().ToArray();
-
-                if (files.Length > 0)
+                string[] files = ClipboardHelpers.GetFileDropList();
+                
+                if (files != null && files.Length > 0)
                 {
                     ClipboardContentType = EClipboardContentType.Files;
                     ClipboardContent = files;

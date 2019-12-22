@@ -110,7 +110,7 @@ namespace ShareX.UploadersLib.FileUploaders
         public override UploadResult Upload(Stream stream, string fileName)
         {
             string parsedUploadPath = NameParser.Parse(NameParserType.FolderPath, UploadPath);
-            string destinationPath = parsedUploadPath + fileName;
+            string destinationPath = URLHelpers.CombineURL(parsedUploadPath, fileName);
 
             // docs: https://www.backblaze.com/b2/docs/
 
@@ -213,6 +213,12 @@ namespace ShareX.UploadersLib.FileUploaders
                     DebugHelper.WriteLine("B2 uploader: Too Many Requests, trying with same URL.");
                     continue;
                 }
+                else if (uploadResult.RC == 503)
+                {
+                    DebugHelper.WriteLine("B2 uploader: Service Unavailable, trying with new URL.");
+                    url = null;
+                    continue;
+                }
                 else if (uploadResult.RC != 200)
                 {
                     // something else happened that wasn't a success, so bail out
@@ -228,14 +234,17 @@ namespace ShareX.UploadersLib.FileUploaders
                 //         or
                 //           $customUrl/$uploadPath
 
-                string remoteLocation = URLHelpers.CombineURL(auth.downloadUrl, "file", URLHelpers.URLEncode(BucketName), uploadResult.Upload.fileName);
+                string encodedFileName = URLHelpers.URLEncode(uploadResult.Upload.fileName, true);
+                string remoteLocation = URLHelpers.CombineURL(auth.downloadUrl, "file", URLHelpers.URLEncode(BucketName), encodedFileName);
 
                 DebugHelper.WriteLine($"B2 uploader: Successful upload! File should be at: {remoteLocation}");
 
                 if (UseCustomUrl)
                 {
                     string parsedCustomUrl = NameParser.Parse(NameParserType.FolderPath, CustomUrl);
-                    remoteLocation = parsedCustomUrl + uploadResult.Upload.fileName;
+                    remoteLocation = URLHelpers.CombineURL(parsedCustomUrl, encodedFileName);
+                    remoteLocation = URLHelpers.FixPrefix(remoteLocation, "https://");
+
                     DebugHelper.WriteLine($"B2 uploader: But user requested custom URL, which will be: {remoteLocation}");
                 }
 

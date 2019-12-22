@@ -30,11 +30,12 @@ namespace ShareX.HistoryLib
 {
     public partial class HistoryItemInfoForm : Form
     {
-        public HistoryItemInfoForm(object hi)
+        public HistoryItemInfoForm(HistoryItem hi)
         {
             InitializeComponent();
-            Icon = ShareXResources.Icon;
-            olvMain.SelectObject(hi);
+            ShareXResources.ApplyTheme(this);
+
+            olvMain.SelectedObject = hi;
         }
     }
 }

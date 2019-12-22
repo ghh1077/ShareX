@@ -38,7 +38,8 @@ namespace ShareX.UploadersLib
         public ResponseForm(string response)
         {
             InitializeComponent();
-            Icon = ShareXResources.Icon;
+            ShareXResources.ApplyTheme(this);
+
             Response = response;
             txtSource.Text = Response;
         }

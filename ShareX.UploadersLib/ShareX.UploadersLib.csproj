@@ -248,7 +248,6 @@
     <Compile Include="SharingServices\EmailSharingService.cs" />
     <Compile Include="SharingServices\FacebookSharingService.cs" />
     <Compile Include="SharingServices\GoogleImageSearchSharingService.cs" />
-    <Compile Include="SharingServices\GooglePlusSharingService.cs" />
     <Compile Include="SharingServices\LinkedInSharingService.cs" />
     <Compile Include="SharingServices\PinterestSharingService.cs" />
     <Compile Include="SharingServices\PushbulletSharingService.cs" />
@@ -326,7 +325,6 @@
     <Compile Include="ImageUploaders\ImageBin.cs" />
     <Compile Include="ImageUploaders\ImageShackUploader.cs" />
     <Compile Include="ImageUploaders\Img1Uploader.cs" />
-    <Compile Include="ImageUploaders\TinyPicUploader.cs" />
     <Compile Include="ImageUploaders\TwitPicUploader.cs" />
     <Compile Include="ImageUploaders\TwitSnapsUploader.cs" />
     <Compile Include="ImageUploaders\UploadScreenshot.cs" />
@@ -357,6 +355,7 @@
     <Compile Include="URLShorteners\VgdURLShortener.cs" />
     <Compile Include="URLShorteners\VURLShortener.cs" />
     <Compile Include="URLShorteners\YourlsURLShortener.cs" />
+    <Compile Include="URLShorteners\ZeroWidthURLShortener.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\AccountTypeControl.de.resx">
@@ -366,6 +365,9 @@
       <DependentUpon>AccountTypeControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\AccountTypeControl.es.resx">
+      <DependentUpon>AccountTypeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\AccountTypeControl.fa-IR.resx">
       <DependentUpon>AccountTypeControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\AccountTypeControl.fr.resx">
@@ -455,10 +457,31 @@
     <EmbeddedResource Include="Controls\OAuthControl.zh-TW.resx">
       <DependentUpon>OAuthControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CustomUploaderSettingsForm.de.resx">
+      <DependentUpon>CustomUploaderSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CustomUploaderSettingsForm.es-MX.resx">
+      <DependentUpon>CustomUploaderSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CustomUploaderSettingsForm.fa-IR.resx">
+      <DependentUpon>CustomUploaderSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CustomUploaderSettingsForm.fr.resx">
+      <DependentUpon>CustomUploaderSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\CustomUploaderSettingsForm.resx">
       <DependentUpon>CustomUploaderSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CustomUploaderSettingsForm.ru.resx">
+      <DependentUpon>CustomUploaderSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CustomUploaderSettingsForm.vi-VN.resx">
+      <DependentUpon>CustomUploaderSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CustomUploaderSettingsForm.zh-CN.resx">
+      <DependentUpon>CustomUploaderSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CustomUploaderSettingsForm.zh-TW.resx">
       <DependentUpon>CustomUploaderSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EmailForm.de.resx">
@@ -468,6 +491,9 @@
       <DependentUpon>EmailForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EmailForm.es.resx">
+      <DependentUpon>EmailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EmailForm.fa-IR.resx">
       <DependentUpon>EmailForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EmailForm.fr.resx">
@@ -518,6 +544,9 @@
     <EmbeddedResource Include="Forms\JiraUpload.es.resx">
       <DependentUpon>JiraUpload.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\JiraUpload.fa-IR.resx">
+      <DependentUpon>JiraUpload.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\JiraUpload.fr.resx">
       <DependentUpon>JiraUpload.cs</DependentUpon>
     </EmbeddedResource>
@@ -563,6 +592,12 @@
     <EmbeddedResource Include="Forms\OCRSpaceForm.es-MX.resx">
       <DependentUpon>OCRSpaceForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OCRSpaceForm.fa-IR.resx">
+      <DependentUpon>OCRSpaceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OCRSpaceForm.fr.resx">
+      <DependentUpon>OCRSpaceForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\OCRSpaceForm.id-ID.resx">
       <DependentUpon>OCRSpaceForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -584,10 +619,19 @@
     <EmbeddedResource Include="Forms\OCRSpaceForm.zh-CN.resx">
       <DependentUpon>OCRSpaceForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OCRSpaceForm.zh-TW.resx">
+      <DependentUpon>OCRSpaceForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ParserSelectForm.resx">
       <DependentUpon>ParserSelectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PuushLoginForm.es-MX.resx">
+      <DependentUpon>PuushLoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PuushLoginForm.fa-IR.resx">
+      <DependentUpon>PuushLoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PuushLoginForm.fr.resx">
       <DependentUpon>PuushLoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PuushLoginForm.ko-KR.resx">
@@ -608,6 +652,9 @@
     <EmbeddedResource Include="Forms\PuushLoginForm.zh-CN.resx">
       <DependentUpon>PuushLoginForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PuushLoginForm.zh-TW.resx">
+      <DependentUpon>PuushLoginForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ResponseForm.de.resx">
       <DependentUpon>ResponseForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -615,6 +662,9 @@
       <DependentUpon>ResponseForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ResponseForm.es.resx">
+      <DependentUpon>ResponseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ResponseForm.fa-IR.resx">
       <DependentUpon>ResponseForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ResponseForm.fr.resx">
@@ -665,6 +715,9 @@
     <EmbeddedResource Include="Forms\TwitterTweetForm.es.resx">
       <DependentUpon>TwitterTweetForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TwitterTweetForm.fa-IR.resx">
+      <DependentUpon>TwitterTweetForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\TwitterTweetForm.fr.resx">
       <DependentUpon>TwitterTweetForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -713,6 +766,9 @@
     <EmbeddedResource Include="Forms\UploadersConfigForm.es.resx">
       <DependentUpon>UploadersConfigForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UploadersConfigForm.fa-IR.resx">
+      <DependentUpon>UploadersConfigForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\UploadersConfigForm.fr.resx">
       <DependentUpon>UploadersConfigForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -759,6 +815,9 @@
       <DependentUpon>UserPassBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UserPassBox.es.resx">
+      <DependentUpon>UserPassBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UserPassBox.fa-IR.resx">
       <DependentUpon>UserPassBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UserPassBox.fr.resx">
@@ -832,6 +891,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.es-MX.resx" />
     <EmbeddedResource Include="Properties\Resources.es.resx" />
+    <EmbeddedResource Include="Properties\Resources.fa-IR.resx" />
     <EmbeddedResource Include="Properties\Resources.fr.resx" />
     <EmbeddedResource Include="Properties\Resources.hu.resx" />
     <EmbeddedResource Include="Properties\Resources.id-ID.resx" />
@@ -872,7 +932,6 @@
     <None Include="Favicons\Pastebin.ico" />
     <None Include="Favicons\Photobucket.ico" />
     <None Include="Favicons\SendSpace.ico" />
-    <None Include="Favicons\TinyPic.ico" />
     <None Include="Favicons\Twitter.ico" />
     <None Include="Favicons\Upaste.ico" />
     <None Include="Favicons\AdFly.ico" />
@@ -894,7 +953,6 @@
     <None Include="Favicons\Streamable.ico" />
     <None Include="Favicons\Sul.png" />
     <None Include="Favicons\Vgyme.ico" />
-    <None Include="Favicons\Lithiio.ico" />
     <None Include="Favicons\puush.ico" />
     <None Include="Resources\puush-256.png" />
     <None Include="Resources\folder-network.png" />
@@ -914,13 +972,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentFTP">
-      <Version>23.1.0</Version>
+      <Version>28.0.1</Version>
     </PackageReference>
     <PackageReference Include="MegaApiClient">
       <Version>1.7.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.1</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="SSH.NET">
       <Version>2016.1.0</Version>
@@ -931,6 +989,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Favicons\Teknik.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Favicons\Lithiio.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

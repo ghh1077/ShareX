@@ -180,9 +180,6 @@ Distance: {6:0.00} px / Angle: {7:0.00}°</value>
   <data name="layer_shape_region" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\layer-shape-region.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ShapeManager_CreateToolbar_EditorBackgroundColor" xml:space="preserve">
-    <value>Editor background color...</value>
-  </data>
   <data name="arrow_circle_double" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\arrow-circle-double.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -255,9 +252,6 @@ Distance: {6:0.00} px / Angle: {7:0.00}°</value>
   <data name="ShapeManager_CreateToolbar_SendToBack" xml:space="preserve">
     <value>Send to back</value>
   </data>
-  <data name="FFmpegHelper_Record_FFmpeg_error" xml:space="preserve">
-    <value>FFmpeg error</value>
-  </data>
   <data name="ShapeManager_CreateContextMenu_Capture_active_monitor" xml:space="preserve">
     <value>Capture active monitor</value>
   </data>
@@ -274,7 +268,7 @@ Distance: {6:0.00} px / Angle: {7:0.00}°</value>
     <value>Arrows on both ends</value>
   </data>
   <data name="ShapeManager_CreateToolbar_InterpolationMode" xml:space="preserve">
-    <value>Interpolation mode</value>
+    <value>Interpolation mode:</value>
   </data>
   <data name="layers_stack_arrange_back" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\layers-stack-arrange-back.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -660,5 +654,14 @@ X: {4} Y: {5}</value>
   </data>
   <data name="stamp_cursor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\stamp-cursor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="magnifier_zoom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\magnifier-zoom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MagnifyStrength" xml:space="preserve">
+    <value>Magnify strength:</value>
+  </data>
+  <data name="CloseEsc" xml:space="preserve">
+    <value>Close (Esc)</value>
   </data>
 </root>

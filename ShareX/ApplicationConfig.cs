@@ -50,8 +50,11 @@ namespace ShareX
 
         #region Main Form
 
+        public TaskViewMode TaskViewMode = TaskViewMode.ThumbnailView;
         public bool ShowMenu = true;
         public bool ShowColumns = true;
+        public bool ShowThumbnailTitle = true;
+        public ThumbnailTitleLocation ThumbnailTitleLocation = ThumbnailTitleLocation.Top;
         public ImagePreviewVisibility ImagePreview = ImagePreviewVisibility.Automatic;
         public ImagePreviewLocation ImagePreviewLocation = ImagePreviewLocation.Side;
         public int PreviewSplitterDistance = 335;
@@ -69,6 +72,9 @@ namespace ShareX
         public bool SilentRun = false;
         public bool TrayIconProgressEnabled = true;
         public bool TaskbarProgressEnabled = true;
+        public bool UseDarkTheme = true;
+        public bool ExperimentalDarkTheme = false;
+        public bool UseWhiteShareXIcon = false;
         public bool RememberMainFormPosition = false;
         public Point MainFormPosition = Point.Empty;
         public bool RememberMainFormSize = false;
@@ -81,6 +87,13 @@ namespace ShareX
         public bool CheckPreReleaseUpdates = false;
 
         #endregion General
+
+        #region Theme
+
+        public List<ShareXTheme> Themes = new List<ShareXTheme>();
+        public int SelectedTheme = 0;
+
+        #endregion
 
         #region Paths
 
@@ -137,6 +150,12 @@ namespace ShareX
 
         #region Advanced
 
+        [Category("Application"), DefaultValue(true), Description("Automatically check updates.")]
+#if STEAM || WindowsStore
+        [Browsable(false)]
+#endif
+        public bool AutoCheckUpdate { get; set; }
+
         [Category("Application"), DefaultValue(false), Description("Calculate and show file sizes in binary units (KiB, MiB etc.)")]
         public bool BinaryUnits { get; set; }
 
@@ -146,23 +165,11 @@ namespace ShareX
         [Category("Application"), DefaultValue(false), Description("Show only customized tasks in main window workflows.")]
         public bool WorkflowsOnlyShowEdited { get; set; }
 
-        [Category("Application"), DefaultValue(true), Description("Automatically check updates.")]
-#if STEAM || WindowsStore
-        [Browsable(false)]
-#endif
-        public bool AutoCheckUpdate { get; set; }
-
         [Category("Application"), DefaultValue(true), Description("Automatically expand capture menu when you open the tray menu.")]
         public bool TrayAutoExpandCaptureMenu { get; set; }
 
         [Category("Application"), DefaultValue(true), Description("Show tips and hotkeys in main window when task list is empty.")]
         public bool ShowMainWindowTip { get; set; }
-
-        [Category("Application"), DefaultValue(true), Description("Show support us button in main window when task list is empty.")]
-        public bool ShowSupportUsButton { get; set; }
-
-        [Category("Application"), DefaultValue(true), Description("Show Discord button in main window when task list is empty.")]
-        public bool ShowDiscordButton { get; set; }
 
         [Category("Application"), DefaultValue(""), Description("URLs will open using this path instead of default browser. Example path: chrome.exe")]
         [Editor(typeof(ExeFileNameEditor), typeof(UITypeEditor))]
@@ -177,11 +184,11 @@ namespace ShareX
         [Category("Application"), DefaultValue(false), Description("In main window when task is completed automatically select it.")]
         public bool AutoSelectLastCompletedTask { get; set; }
 
-        [Category("Application"), DefaultValue(false), Description("Use white version of ShareX icon.")]
-        public bool UseWhiteShareXIcon { get; set; }
-
         [Category("Hotkey"), DefaultValue(false), Description("Disables hotkeys.")]
         public bool DisableHotkeys { get; set; }
+
+        [Category("Hotkey"), DefaultValue(false), Description("If active window is fullscreen then hotkeys won't be executed.")]
+        public bool DisableHotkeysOnFullscreen { get; set; }
 
         private int hotkeyRepeatLimit;
 
@@ -215,6 +222,9 @@ namespace ShareX
 
         [Category("Upload"), DefaultValue(false), Description("Accept invalid SSL certificates when uploading.")]
         public bool AcceptInvalidSSLCertificates { get; set; }
+
+        [Category("Upload"), DefaultValue(true), Description("Ignore emojis while URL encoding upload results.")]
+        public bool URLEncodeIgnoreEmoji { get; set; }
 
         [Category("Upload"), DefaultValue(true), Description("Show first time upload warning.")]
         public bool ShowUploadWarning { get; set; }
